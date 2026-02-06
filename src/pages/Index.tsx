@@ -24,7 +24,9 @@ const Index = () => {
       <div id="reels" className="overflow-x-hidden">
         <Reels />
       </div>
-      <CaseStudies />
+      <div id="case-studies" className="overflow-x-hidden">
+        <CaseStudies />
+      </div>
       {/* <div id="services">
         <Services />
       </div> */}

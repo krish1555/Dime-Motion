@@ -14,19 +14,20 @@ const Reels = () => {
 
   // Updated video sources from assets 11-22
   const reels = [
-    { id: 0, src: '/src/assets/11.mp4', title: "Creative Vision 1" },
-    { id: 1, src: '/src/assets/12.mp4', title: "Visual Story 2" },
-    { id: 2, src: '/src/assets/13.mp4', title: "Motion Art 3" },
-    { id: 3, src: '/src/assets/14.mp4', title: "Cinematic Flow 4" },
-    { id: 4, src: '/src/assets/15.mp4', title: "Dynamic Shot 5" },
-    { id: 5, src: '/src/assets/16.mp4', title: "Bold Narrative 6" },
-    { id: 6, src: '/src/assets/17.mp4', title: "Artistic Moment 7" },
-    { id: 7, src: '/src/assets/18.mp4', title: "Visual Poetry 8" },
-    { id: 8, src: '/src/assets/19.mp4', title: "Creative Edge 9" },
-    { id: 9, src: '/src/assets/20.mp4', title: "Story Craft 10" },
-    { id: 10, src: '/src/assets/21.mp4', title: "Motion Magic 11" },
-    { id: 11, src: '/src/assets/22.mp4', title: "Visual Impact 12" },
+    { id: 0, src: '/11.mp4', title: "Creative Vision 1" },
+    { id: 1, src: '/12.mp4', title: "Visual Story 2" },
+    { id: 2, src: '/13.mp4', title: "Motion Art 3" },
+    { id: 3, src: '/14.mp4', title: "Cinematic Flow 4" },
+    { id: 4, src: '/15.mp4', title: "Dynamic Shot 5" },
+    { id: 5, src: '/16.mp4', title: "Bold Narrative 6" },
+    { id: 6, src: '/17.mp4', title: "Artistic Moment 7" },
+    { id: 7, src: '/18.mp4', title: "Visual Poetry 8" },
+    { id: 8, src: '/19.mp4', title: "Creative Edge 9" },
+    { id: 9, src: '/20.mp4', title: "Story Craft 10" },
+    { id: 10, src: '/21.mp4', title: "Motion Magic 11" },
+    { id: 11, src: '/22.mp4', title: "Visual Impact 12" },
   ];
+
 
   // Mouse wheel scrolling
   const handleWheel = (e: React.WheelEvent) => {
@@ -482,7 +483,7 @@ const Reels = () => {
                     controls
                     preload="metadata"
                   >
-                    <source src="/src/assets/l2.mp4" type="video/mp4" />
+                    <source src="/l2.mp4" type="video/mp4" />
                   </video>
 
                   {/* Overlay gradient */}
