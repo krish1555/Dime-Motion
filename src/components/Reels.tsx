@@ -29,15 +29,15 @@ const Reels = () => {
   ];
 
 
-  // Mouse wheel scrolling
+  // Mouse wheel scrolling - horizontal
   const handleWheel = (e: React.WheelEvent) => {
-    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-      e.preventDefault();
-      if (e.deltaY > 0 && activeIndex < reels.length - 1) {
-        setActiveIndex(prev => prev + 1);
-      } else if (e.deltaY < 0 && activeIndex > 0) {
-        setActiveIndex(prev => prev - 1);
-      }
+    e.preventDefault();
+    // Convert vertical scroll to horizontal navigation
+    const delta = e.deltaY || e.deltaX;
+    if (delta > 0 && activeIndex < reels.length - 1) {
+      setActiveIndex(prev => prev + 1);
+    } else if (delta < 0 && activeIndex > 0) {
+      setActiveIndex(prev => prev - 1);
     }
   };
 
