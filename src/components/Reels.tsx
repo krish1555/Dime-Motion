@@ -29,15 +29,27 @@ const Reels = () => {
   ];
 
 
-  // Mouse wheel scrolling - horizontal
+  // Scroll accumulator for smooth, slow horizontal scrolling
+  const scrollAccumulator = useRef(0);
+  const SCROLL_THRESHOLD = 100; // Pixels needed to change one reel
+
+  // Mouse wheel scrolling - horizontal only with threshold
   const handleWheel = (e: React.WheelEvent) => {
-    e.preventDefault();
-    // Convert vertical scroll to horizontal navigation
-    const delta = e.deltaY || e.deltaX;
-    if (delta > 0 && activeIndex < reels.length - 1) {
-      setActiveIndex(prev => prev + 1);
-    } else if (delta < 0 && activeIndex > 0) {
-      setActiveIndex(prev => prev - 1);
+    // Only respond to horizontal scroll (ignore vertical)
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+      e.preventDefault();
+
+      // Accumulate scroll distance
+      scrollAccumulator.current += e.deltaX;
+
+      // Check if we've scrolled enough to change reels
+      if (scrollAccumulator.current > SCROLL_THRESHOLD && activeIndex < reels.length - 1) {
+        setActiveIndex(prev => prev + 1);
+        scrollAccumulator.current = 0; // Reset accumulator
+      } else if (scrollAccumulator.current < -SCROLL_THRESHOLD && activeIndex > 0) {
+        setActiveIndex(prev => prev - 1);
+        scrollAccumulator.current = 0; // Reset accumulator
+      }
     }
   };
 
