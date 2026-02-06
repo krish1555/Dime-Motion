@@ -31,9 +31,11 @@ const Reels = () => {
 
   // Scroll accumulator for smooth, slow horizontal scrolling
   const scrollAccumulator = useRef(0);
+  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
   const SCROLL_THRESHOLD = 100; // Pixels needed to change one reel
+  const DEBOUNCE_DELAY = 150; // ms to wait before resetting accumulator
 
-  // Mouse wheel scrolling - horizontal only with threshold
+  // Mouse wheel scrolling - horizontal only with threshold and debounce
   const handleWheel = (e: React.WheelEvent) => {
     // Only respond to horizontal scroll (ignore vertical)
     if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
@@ -42,6 +44,11 @@ const Reels = () => {
       // Accumulate scroll distance
       scrollAccumulator.current += e.deltaX;
 
+      // Clear existing timeout
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
+
       // Check if we've scrolled enough to change reels
       if (scrollAccumulator.current > SCROLL_THRESHOLD && activeIndex < reels.length - 1) {
         setActiveIndex(prev => prev + 1);
@@ -49,6 +56,11 @@ const Reels = () => {
       } else if (scrollAccumulator.current < -SCROLL_THRESHOLD && activeIndex > 0) {
         setActiveIndex(prev => prev - 1);
         scrollAccumulator.current = 0; // Reset accumulator
+      } else {
+        // Reset accumulator after debounce delay if no threshold reached
+        scrollTimeout.current = setTimeout(() => {
+          scrollAccumulator.current = 0;
+        }, DEBOUNCE_DELAY);
       }
     }
   };
