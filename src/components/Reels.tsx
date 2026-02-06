@@ -32,7 +32,7 @@ const Reels = () => {
   // Scroll accumulator for smooth, slow horizontal scrolling
   const scrollAccumulator = useRef(0);
   const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
-  const SCROLL_THRESHOLD = 100; // Pixels needed to change one reel
+  const SCROLL_THRESHOLD = 500; // Pixels needed to change one reel (5x heavier)
   const DEBOUNCE_DELAY = 150; // ms to wait before resetting accumulator
 
   // Mouse wheel scrolling - horizontal only with threshold and debounce
