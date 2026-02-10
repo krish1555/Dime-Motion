@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { DollarSign } from "lucide-react";
+import { DollarSign, MousePointer2 } from "lucide-react";
 import heroBackground from "@/assets/hero-background.png";
 import testimonial1 from "@/assets/1.png";
 import testimonial2 from "@/assets/2.jpeg";
@@ -15,16 +15,31 @@ const Hero = () => {
     smoothScrollTo(sectionId);
   };
 
+  // Cursor Component
+  const FloatingCursor = ({ label, color, x, y, delay }: { label: string, color: string, x: string, y: string, delay: string }) => (
+    <div
+      className={`absolute ${x} ${y} z-20 pointer-events-none hidden md:block animate-float`}
+      style={{ animationDelay: delay }}
+    >
+      <div className="relative">
+        <MousePointer2 className={`w-6 h-6 ${color} fill-current transform -rotate-12`} />
+        <div className={`absolute top-full left-4 px-3 py-1.5 rounded-full ${color.replace('text-', 'bg-')} text-white text-[10px] font-bold whitespace-nowrap shadow-lg`}>
+          {label}
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden w-full">
       {/* Background Image */}
 
 
       {/* Overlay - Darkened */}
-      <div className="absolute inset-0 bg-black/60" />
+
 
       {/* Testimonial Strip - Glass Dark */}
-      <div className="absolute bottom-0 left-0 right-0 py-4 sm:py-6 overflow-hidden w-full testimonial-strip z-20">
+      <div className="absolute bottom-12 sm:bottom-0 left-0 right-0 py-4 sm:py-6 overflow-hidden w-full testimonial-strip z-20">
         {/* Left fade gradient */}
         <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-black/80 via-black/40 to-transparent z-10 pointer-events-none"></div>
 
@@ -81,11 +96,22 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 text-center max-w-5xl mx-auto px-4 sm:px-6 -mt-20">
+
+        {/* Floating Cursors */}
+        <FloatingCursor label="Content Creators" color="text-green-500" x="left-[2%] lg:left-[0%]" y="top-[70%] lg:top-[65%]" delay="0s" />
+        <FloatingCursor label="Podcast Hosts" color="text-purple-500" x="right-[10%] lg:right-[5%]" y="top-[20%] lg:top-[15%]" delay="2s" />
+        <FloatingCursor label="Entrepreneurs" color="text-orange-500" x="right-[15%] lg:right-[10%]" y="bottom-[30%] lg:bottom-[20%]" delay="4s" />
+
+        {/* Badge */}
+        <div className="inline-block px-4 py-1.5 rounded-full border border-[#FFD700]/30 bg-[#FFD700]/10 text-[#FFD700] text-xs font-bold tracking-widest uppercase mb-8 mt-12 md:mt-24 backdrop-blur-md shadow-[0_0_15px_rgba(255,215,0,0.1)]">
+          Scale Organically
+        </div>
+
         <h1 className="font-zangezi text-4xl sm:text-5xl md:text-6xl lg:text-8xl mb-4 sm:mb-6 leading-tight">
 
           <br />
           <span className="text-white font-zangezi">
-            <span className="text-3xl sm:text-4xl md:text-5xl lg:text-[calc(1em-26px)]"> Forging <span className="underline text-gray-400">Content</span> That </span>
+            <span className="text-3xl sm:text-4xl md:text-5xl lg:text-[calc(1em-26px)]"> Forging <span className="bg-clip-text text-transparent bg-[linear-gradient(90deg,#990134,#BC3345,#FEE17D)]">Content</span> That </span>
             <span className="font-zangezi relative text-white text-3xl sm:text-4xl md:text-5xl lg:text-[calc(1em-26px)]">
               Builds
             </span>
@@ -95,20 +121,18 @@ const Hero = () => {
             <span className="text-3xl sm:text-4xl md:text-5xl lg:text-[calc(1em-19px)]"> Brands and  </span>
             <span className="font-zangezi relative text-white text-3xl sm:text-4xl md:text-5xl lg:text-[calc(1em-19px)]">
               Bank Accounts
-              {/* Continuously popping dollar notes - Updated brightness */}
-              <DollarSign className="absolute -top-2 -right-6 w-6 h-6 text-green-400 animate-bounce opacity-0" style={{ animation: 'popDollar 2s infinite' }} />
-              <DollarSign className="absolute -bottom-1 -right-8 w-7 h-7 text-white animate-bounce opacity-0" style={{ animation: 'popDollar 2s infinite 0.5s' }} />
-              <DollarSign className="absolute top-1 -right-12 w-5 h-5 text-green-400 animate-bounce opacity-0" style={{ animation: 'popDollar 2s infinite 1s' }} />
-              <DollarSign className="absolute -top-4 -right-4 w-6 h-6 text-white animate-bounce opacity-0" style={{ animation: 'popDollar 2s infinite 1.5s' }} />
+              {/* Reduced noise: Only 2 dollar signs */}
+              <DollarSign className="absolute -top-3 -right-6 w-6 h-6 text-green-400 animate-bounce opacity-0" style={{ animation: 'popDollar 3s infinite' }} />
+              <DollarSign className="absolute -bottom-2 -right-10 w-5 h-5 text-white animate-bounce opacity-0" style={{ animation: 'popDollar 3s infinite 1.5s' }} />
             </span>
           </span>
         </h1>
 
-        <p className="text-gray-200 text-xl sm:text-2xl md:text-3xl lg:text-2.5xl font-medium mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed px-2">
+        <p className="text-gray-200 text-sm sm:text-lg md:text-3xl lg:text-2.5xl font-medium mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed px-2">
           Where creativity meets strategy — turning content into wealth.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center mt-12 sm:mt-16">
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center mt-12 sm:mt-16 md:mt-8">
           <div className="relative group">
             {/* Moving Light Streak Container */}
             <div className="absolute inset-[-1px] rounded-full overflow-hidden">
@@ -118,7 +142,7 @@ const Hero = () => {
             <Button
               size="lg"
               onClick={() => scrollToSection('contact')}
-              className="relative px-8 sm:px-12 py-4 sm:py-6 text-xl sm:text-2xl font-light tracking-wide bg-black text-white/90 rounded-full border border-white/10 hover:bg-gray-900 transition-all duration-300 scale-100 sm:scale-105"
+              className="relative px-6 sm:px-12 py-3 sm:py-6 text-base sm:text-2xl font-bold tracking-wide bg-[#FFDA7B] text-black rounded-full border border-[#FFDA7B] hover:bg-[#FBC02D] hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(255,218,123,0.3)]"
             >
               Book a Discovery Call
             </Button>
@@ -128,7 +152,7 @@ const Hero = () => {
 
       </div>
 
-    </section>
+    </section >
   );
 };
 

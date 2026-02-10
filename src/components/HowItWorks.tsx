@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -7,6 +7,14 @@ const HowItWorks = () => {
   const flywheelRef = useRef<HTMLDivElement>(null);
   const labelsRef = useRef<(HTMLDivElement | null)[]>([]);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Platform labels data
   const platforms = [
@@ -143,7 +151,7 @@ const HowItWorks = () => {
   const getLayoutStyles = (index: number, total: number) => {
     const angleStep = (2 * Math.PI) / total;
     const angle = index * angleStep - Math.PI / 2;
-    const radius = 30; // Aligned with the tighter grey circular border
+    const radius = isMobile ? 42 : 30; // Mobile radius 42 (pushed out), Desktop 30
 
     const x = 50 + radius * Math.cos(angle);
     const y = 50 + radius * Math.sin(angle);
@@ -192,60 +200,62 @@ const HowItWorks = () => {
         </defs>
       </svg>
 
-      <section ref={sectionRef} id="how-it-works" className="py-24 bg-black relative overflow-hidden min-h-screen flex items-center">
+      <section ref={sectionRef} id="how-it-works" className="py-24 bg-transparent relative overflow-hidden min-h-screen flex items-center">
         {/* Background effects */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-black to-black pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/20 via-black/80 to-black pointer-events-none" />
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
             <h2 className="font-heading text-4xl md:text-6xl font-bold mb-4 text-white">
-              High Level <span className="text-[#FFEB3B]">Repurposing</span>
+              High Level <span className="text-transparent bg-clip-text bg-[linear-gradient(to_right,#990134,#BC3345,#FEE17D)]">Repurposing</span>
             </h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
               We build bulletproof content flywheels for personal brands to grow on multiple platforms with high volume of content
             </p>
           </div>
 
-          <div className="relative w-full max-w-[800px] aspect-square mx-auto flex items-center justify-center">
-            <div ref={flywheelRef} className="relative w-full h-full flex items-center justify-center">
-              {/* Custom Rings Image */}
-              <img
-                src="/rings.png"
-                alt="Content Flywheel Rings"
-                className="w-[45%] max-w-[500px] object-contain"
-              />
+          <div className="relative w-full max-w-[800px] h-[450px] md:h-[600px] lg:h-[800px] mx-auto flex items-center justify-center mt-[-40px] md:mt-0">
+            <div className="absolute inset-0 w-full h-full flex items-center justify-center scale-[0.65] sm:scale-75 md:scale-100 origin-center pointer-events-none">
+              <div ref={flywheelRef} className="relative w-full h-full flex items-center justify-center pointer-events-auto">
+                {/* Custom Rings Image */}
+                <img
+                  src="/rings.png"
+                  alt="Content Flywheel Rings"
+                  className="w-[45%] max-w-[500px] object-contain"
+                />
 
-              <div className="absolute inset-0 m-auto w-[60%] h-[60%] rounded-full border border-gray-700/50 pointer-events-none" />
+                <div className="absolute inset-0 m-auto w-[60%] h-[60%] rounded-full border border-gray-700/50 pointer-events-none" />
 
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <h3 className="text-white text-4xl md:text-5xl font-bold tracking-tight leading-tight">Content</h3>
-                  <h3 className="text-white text-4xl md:text-5xl font-bold tracking-tight leading-tight">Flywheel</h3>
-                </div>
-              </div>
-
-              {platforms.map((platform, index) => {
-                const { style, flexClass } = getLayoutStyles(index, platforms.length);
-                const [firstWord, ...rest] = platform.name.split(" ");
-                const remainingText = rest.join(" ");
-
-                return (
-                  <div
-                    key={index}
-                    ref={(el) => (labelsRef.current[index] = el)}
-                    className={`absolute flex items-center gap-2 ${flexClass} min-w-max`}
-                    style={style}
-                  >
-                    <div className="bg-white/10 backdrop-blur-md rounded-full p-2 border border-white/20 shadow-lg shrink-0">
-                      {getIcon(platform.icon)}
-                    </div>
-                    <div className={`flex flex-col ${flexClass.includes('text-right') ? 'items-end' : flexClass.includes('text-center') ? 'items-center' : 'items-start'} leading-none`}>
-                      <span className="text-white font-bold text-sm mb-0.5">{firstWord}</span>
-                      <span className="text-gray-400 font-medium text-[10px] uppercase tracking-wide">{remainingText}</span>
-                    </div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center">
+                    <h3 className="text-white text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight">Content</h3>
+                    <h3 className="text-white text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight">Flywheel</h3>
                   </div>
-                );
-              })}
+                </div>
+
+                {platforms.map((platform, index) => {
+                  const { style, flexClass } = getLayoutStyles(index, platforms.length);
+                  const [firstWord, ...rest] = platform.name.split(" ");
+                  const remainingText = rest.join(" ");
+
+                  return (
+                    <div
+                      key={index}
+                      ref={(el) => (labelsRef.current[index] = el)}
+                      className={`absolute flex items-center gap-2 ${flexClass} min-w-max`}
+                      style={style}
+                    >
+                      <div className="bg-white/10 backdrop-blur-md rounded-full p-2 border border-white/20 shadow-lg shrink-0">
+                        {getIcon(platform.icon)}
+                      </div>
+                      <div className={`flex flex-col ${flexClass.includes('text-right') ? 'items-end' : flexClass.includes('text-center') ? 'items-center' : 'items-start'} leading-none`}>
+                        <span className="text-white font-bold text-xl md:text-sm mb-1 md:mb-0.5">{firstWord}</span>
+                        <span className="text-gray-400 font-medium text-sm md:text-[10px] uppercase tracking-wide">{remainingText}</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
             <button
@@ -256,7 +266,7 @@ const HowItWorks = () => {
                   contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
               }}
-              className="absolute bottom-[-40px] left-1/2 -translate-x-1/2 px-8 py-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold rounded-full shadow-2xl hover:shadow-yellow-500/50 hover:scale-105 transition-all duration-300 text-lg"
+              className="absolute bottom-8 md:bottom-12 left-0 right-0 mx-auto w-fit px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold rounded-full shadow-2xl hover:shadow-yellow-500/50 hover:scale-105 transition-all duration-300 text-base md:text-lg z-20 whitespace-nowrap"
             >
               Book a Discovery Call
             </button>

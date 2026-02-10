@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
 import bg2 from '@/assets/bg-2.png';
 import bg3 from '@/assets/bg-3.png';
-import bg4 from '@/assets/bg-4.jpg';
+
 import trailer1 from '@/assets/trailer1.mp4';
 import trailer2 from '@/assets/trailer2.mp4';
 
@@ -16,6 +16,16 @@ const Reels = () => {
   const [isLongVideoPlaying, setIsLongVideoPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(true);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+
+  // Mobile detection for responsive 3D layout
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Updated video sources
   const reels = [
@@ -140,27 +150,11 @@ const Reels = () => {
     <section
       id="reels"
       ref={sectionRef}
-      className="py-16 relative overflow-hidden flex flex-col justify-center min-h-screen bg-black"
+      className="py-16 relative overflow-hidden flex flex-col justify-center min-h-screen bg-transparent"
       onWheel={handleWheel}
     >
-      {/* 
-        --- UNIFIED BACKGROUND SYSTEM --- 
-        Goal: Faded, seamless blend between 3 distinct textures using large overlaps and gradient masks.
-      */}
-
-      {/* UNIFIED BACKGROUND: Single texture spanning all 3 sections */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src={bg4}
-          alt="Unified Background"
-          className="w-full h-full object-cover"
-          style={{
-            maskImage: 'linear-gradient(to bottom, transparent 10%, black 30%, black 85%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, transparent 10%, black 30%, black 85%, transparent 100%)'
-          }}
-        />
-        <div className="absolute inset-0 bg-black/60 mix-blend-multiply" />
-      </div>
+      {/* Reduced local background opacity to let global texture show through, or remove entirely if desired */}
+      <div className="absolute inset-0 z-0 bg-black/20"></div>
 
 
       {/* --- CONTENT --- */}
@@ -225,18 +219,24 @@ const Reels = () => {
 
                   // 3D Cover Flow Logic (Inward / Concave)
                   rotateY = -sign * 45; // Face inwards (Standard Cover Flow)
-                  translateX = sign * (180 + (factor * 80));
+
+                  // Responsive spacing
+                  const baseOffset = isMobile ? 120 : 180;
+                  const factorOffset = isMobile ? 50 : 80;
+
+                  translateX = sign * (baseOffset + (factor * factorOffset));
+
                   translateZ = -(factor * 100);
                   scale = Math.max(0.6, 1 - (factor * 0.15));
                   opacity = Math.max(0.3, 1 - (factor * 0.2));
                   zIndex = 40 - factor;
-                  blur = factor * 1;
+                  blur = factor * 0.5;
                 }
 
                 return (
                   <motion.div
                     key={reel.id}
-                    className="absolute w-[180px] md:w-[210px] aspect-[9/16] rounded-3xl overflow-hidden border border-white/20 bg-black cursor-pointer"
+                    className="absolute w-[160px] md:w-[210px] aspect-[9/16] rounded-3xl overflow-hidden border border-white/20 bg-black cursor-pointer"
                     initial={false}
                     animate={{ rotateY, z: translateZ, x: translateX, scale, opacity, filter: `blur(${blur}px)` }}
                     whileHover={{ scale: scale * 1.1, zIndex: 100, filter: "blur(0px)", opacity: 1 }}

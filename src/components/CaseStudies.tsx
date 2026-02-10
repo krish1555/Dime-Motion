@@ -4,7 +4,7 @@ import { X, FileText, Smartphone } from 'lucide-react';
 import cryptoVicPdf from '@/assets/Crypto Vic.pdf';
 import lukeDavisPdf from '@/assets/Luke Davis.pdf';
 import nateLeathersPdf from '@/assets/nate leathers.pdf';
-import bg4 from '@/assets/bg-4.jpg';
+
 // Import the Flywheel Component to embed it directly
 import HowItWorks from './HowItWorks';
 
@@ -69,27 +69,9 @@ const CaseStudies = () => {
     const selectedCaseStudy = caseStudies.find(cs => cs.id === selectedCase);
 
     return (
-        <section id="case-studies" className="pt-24 pb-0 bg-black relative overflow-hidden">
-            {/* 
-                BACKGROUND SYSTEM:
-                1. Top Layer: bg-4 fading IN from top, then fading OUT quickly to black.
-                2. Base Layer: Pitch Black.
-            */}
-
-            {/* Top Blend from previous section (bg-4) */}
-            <div className="absolute top-0 left-0 right-0 h-[40vh] z-0 pointer-events-none">
-                <img
-                    src={bg4}
-                    alt="Background Blend"
-                    className="w-full h-full object-cover opacity-60 mix-blend-screen"
-                    style={{
-                        maskImage: 'linear-gradient(to bottom, black 0%, transparent 100%)',
-                        WebkitMaskImage: 'linear-gradient(to bottom, black 0%, transparent 100%)'
-                    }}
-                />
-                {/* Ensure fade to pure black */}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/80 to-black" />
-            </div>
+        <section id="case-studies" className="pt-24 pb-0 bg-transparent relative overflow-hidden">
+            {/* Minimal overlay if needed for text readability */}
+            <div className="absolute inset-0 z-0 bg-black/30"></div>
 
             <div className="container mx-auto px-4 relative z-10 pt-20 mb-32">
                 {/* Section Header */}

@@ -12,58 +12,71 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import FaqBot from "@/components/FaqBot";
 
-import heroBackground from "@/assets/hero-background.png";
+import heroBackground from "@/assets/b-1.png";
 
 const Index = () => {
   return (
-    <main className="min-h-screen bg-background overflow-x-hidden">
+    <main className="min-h-screen bg-black overflow-x-hidden relative">
+      {/* 
+        GLOBAL BACKGROUND: 
+        Fixed position 'b-1' texture that spans the entire viewport.
+        High quality, seamless appearance as user scrolls.
+      */}
+      <div
+        className="fixed inset-0 z-0 opacity-100 brightness-110"
+        style={{
+          backgroundImage: `url(${heroBackground})`,
+          backgroundSize: 'auto', // Use original image size (no zoom)
+          backgroundRepeat: 'repeat', // Tile horizontally and vertically
+          backgroundPosition: 'top left'
+        }}
+      >
+        {/* Optional: subtle overlay to ensure text contrast throughout */}
+        <div className="absolute inset-0 bg-black/10" />
+      </div>
+
       <Navigation />
 
-      {/* Shared Background Wrapper for Hero and About */}
-      <div className="relative">
-        <div className="absolute inset-0 z-0">
-          <img
-            src={heroBackground}
-            alt="Background"
-            className="w-full h-full object-cover"
-          />
-          {/* Optional: Unified overlay if needed, or let components handle their own */}
-          <div className="absolute inset-0 bg-black/40" />
+      {/* Content Wrapper - Relative z-10 to sit above the fixed background */}
+      <div className="relative z-10">
+        <div id="hero" className="overflow-x-hidden">
+          <Hero />
+        </div>
+        <div id="about" className="overflow-x-hidden">
+          <About />
         </div>
 
-        <div className="relative z-10">
-          <div id="hero" className="overflow-x-hidden">
-            <Hero />
-          </div>
-          <div id="about" className="overflow-x-hidden">
-            <About />
-          </div>
+        <div id="reels" className="overflow-x-hidden">
+          <Reels />
         </div>
-      </div>
-      <div id="reels" className="overflow-x-hidden">
-        <Reels />
-      </div>
-      <div id="case-studies" className="overflow-x-hidden">
-        <CaseStudies />
-      </div>
-      {/* <div id="services">
-        <Services />
-      </div> */}
 
-      <div id="process" className="overflow-x-hidden">
-        <Process />
+        <div id="case-studies" className="overflow-x-hidden">
+          <CaseStudies />
+        </div>
+
+        {/* <div id="services">
+          <Services />
+        </div> */}
+
+        <div id="process" className="overflow-x-hidden">
+          <Process />
+        </div>
+
+        {/* <div id="portfolio">
+          <Portfolio />
+        </div> */}
+
+        <div id="testimonials" className="overflow-x-hidden">
+          <Testimonials />
+        </div>
+
+        <div id="contact" className="overflow-x-hidden">
+          <Contact />
+        </div>
+
+        <Footer />
+        <FaqBot />
       </div>
-      {/* <div id="portfolio">
-        <Portfolio />
-      </div> */}
-      <div id="testimonials" className="overflow-x-hidden">
-        <Testimonials />
-      </div>
-      <div id="contact" className="overflow-x-hidden">
-        <Contact />
-      </div>
-      <Footer />
-      <FaqBot />
     </main>
   );
 };

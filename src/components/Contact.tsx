@@ -39,16 +39,13 @@ const Contact = () => {
       Cal.ns["30min"]("inline", {
         elementOrSelector: "#cal-embed",
         calLink: "krish-dimemotion/30min",
-        layout: "month_view",
         config: {
-          layout: "month_view",
           theme: "dark"
         }
       });
 
       Cal.ns["30min"]("ui", {
         hideEventTypeDetails: false,
-        layout: "month_view",
         theme: "dark",
         styles: {
           branding: {
@@ -66,12 +63,9 @@ const Contact = () => {
   ];
 
   return (
-    <section id="contact" className="py-24 relative overflow-hidden bg-black min-h-screen">
-      {/* Background: Pure Black */}
-      <div className="absolute inset-0 z-0 bg-black">
-        <div className="absolute inset-0 bg-black" />
-        <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent to-black" />
-      </div>
+    <section id="contact" className="py-24 relative overflow-hidden bg-transparent min-h-screen">
+      {/* Minimal overlay */}
+      <div className="absolute inset-0 z-0 bg-black/40" />
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-12">
@@ -85,9 +79,9 @@ const Contact = () => {
 
         {/* Main Cal.com Container */}
         <div className="max-w-5xl mx-auto mb-20">
-          <div className="card-glass rounded-2xl p-4 md:p-8 bg-white/5 backdrop-blur-md border border-white/10 shadow-2xl">
-            {/* Cal.com Embed */}
-            <div id="cal-embed" className="w-full h-[600px] md:h-[700px] overflow-hidden rounded-xl bg-black"></div>
+          <div className="card-glass rounded-2xl p-1 md:p-8 bg-white/5 backdrop-blur-md border border-white/10 shadow-2xl">
+            {/* Cal.com Embed - Taller on mobile for vertical flow */}
+            <div id="cal-embed" className="w-full h-[850px] md:h-[700px] overflow-hidden rounded-xl bg-black"></div>
           </div>
         </div>
 

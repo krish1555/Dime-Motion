@@ -69,14 +69,14 @@ const Process = () => {
     const activePlans = activeTab === 'podcast' ? podcastingPlans : brandScalingPlans;
 
     return (
-        <section id="process" className="py-24 bg-black relative overflow-hidden">
+        <section id="process" className="py-12 bg-transparent relative overflow-hidden">
             {/* Background Texture Element (Optional - subtle circle hint) */}
             <div className="absolute top-1/2 -left-32 w-96 h-96 bg-[#FFDA7B]/5 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute top-1/2 -right-32 w-96 h-96 bg-[#FFDA7B]/5 rounded-full blur-3xl pointer-events-none" />
 
             <div className="container mx-auto px-4 z-10 relative">
-                <div className="mb-16 text-center">
-                    <h2 className="text-4xl md:text-6xl font-bold text-white mb-8">
+                <div className="mb-8 text-center">
+                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
                         How to <span className="relative inline-block">
                             work with us
                             <span className="absolute bottom-1 left-0 w-full h-1 bg-[#FFDA7B] rounded-full"></span>
@@ -84,7 +84,7 @@ const Process = () => {
                     </h2>
 
                     {/* Toggle Switch */}
-                    <div className="flex justify-center mb-12">
+                    <div className="flex justify-center mb-8">
                         <div className="bg-[#1a1a1a] p-1 rounded-full inline-flex relative border border-white/10">
                             {/* Sliding Background */}
                             <motion.div
@@ -99,13 +99,13 @@ const Process = () => {
                             />
                             <button
                                 onClick={() => setActiveTab('brand')}
-                                className={`relative z-10 px-8 py-3 rounded-full text-lg font-medium transition-colors duration-300 ${activeTab === 'brand' ? 'text-[#FFDA7B]' : 'text-gray-400 hover:text-white'}`}
+                                className={`relative z-10 px-5 py-1.5 rounded-full text-sm font-medium transition-colors duration-300 ${activeTab === 'brand' ? 'text-[#FFDA7B]' : 'text-gray-400 hover:text-white'}`}
                             >
                                 Brand Scaling
                             </button>
                             <button
                                 onClick={() => setActiveTab('podcast')}
-                                className={`relative z-10 px-8 py-3 rounded-full text-lg font-medium transition-colors duration-300 ${activeTab === 'podcast' ? 'text-[#FFDA7B]' : 'text-gray-400 hover:text-white'}`}
+                                className={`relative z-10 px-5 py-1.5 rounded-full text-sm font-medium transition-colors duration-300 ${activeTab === 'podcast' ? 'text-[#FFDA7B]' : 'text-gray-400 hover:text-white'}`}
                             >
                                 Podcasting
                             </button>
@@ -122,35 +122,35 @@ const Process = () => {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -20 }}
                             transition={{ duration: 0.3 }}
-                            className="max-w-5xl mx-auto"
+                            className="max-w-4xl mx-auto"
                         >
                             {/* @ts-ignore */}
                             {brandScalingPlans.map((plan, index) => (
-                                <div key={index} className="bg-[#111] border border-white/10 rounded-3xl p-8 md:p-12 hover:border-[#FFDA7B]/30 transition-colors duration-300 shadow-2xl">
-                                    <div className="mb-8">
-                                        <span className="inline-block px-4 py-2 rounded-md bg-[#FFDA7B]/10 text-[#FFDA7B] text-sm md:text-base font-bold tracking-widest uppercase mb-4 border border-[#FFDA7B]/20 shadow-[0_0_15px_rgba(255,218,123,0.1)]">
+                                <div key={index} className="bg-[#111] border border-white/10 rounded-3xl p-6 md:p-8 hover:border-[#FFDA7B]/30 transition-colors duration-300 shadow-2xl">
+                                    <div className="mb-6">
+                                        <span className="inline-block px-3 py-1 rounded-md bg-[#FFDA7B]/10 text-[#FFDA7B] text-xs font-bold tracking-widest uppercase mb-3 border border-[#FFDA7B]/20 shadow-[0_0_15px_rgba(255,218,123,0.1)]">
                                             {plan.name}
                                         </span>
-                                        <p className="text-white text-xl md:text-2xl font-light leading-relaxed">
+                                        <p className="text-white text-base md:text-lg font-light leading-relaxed">
                                             {plan.description}
                                         </p>
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                                         {/* Left Col: Included */}
                                         <div>
-                                            <h4 className="text-lg font-bold text-[#FFDA7B] mb-6 border-b border-[#FFDA7B]/30 pb-2 inline-block">
+                                            <h4 className="text-sm font-bold text-[#FFDA7B] mb-3 border-b border-[#FFDA7B]/30 pb-1 inline-block">
                                                 What's included:
                                             </h4>
-                                            <ul className="space-y-4">
+                                            <ul className="space-y-2">
                                                 {plan.items.map((item, i) => (
-                                                    <li key={i} className="flex items-start gap-3">
-                                                        <div className="mt-1 min-w-[18px]">
-                                                            <div className="w-4 h-4 mt-0.5 rounded-[2px] border border-white/40 flex items-center justify-center bg-transparent">
-                                                                <Check size={10} className="text-white" strokeWidth={3} />
+                                                    <li key={i} className="flex items-start gap-2.5">
+                                                        <div className="mt-0.5 min-w-[16px]">
+                                                            <div className="w-3.5 h-3.5 mt-0.5 rounded-[2px] border border-white/40 flex items-center justify-center bg-transparent">
+                                                                <Check size={9} className="text-white" strokeWidth={3} />
                                                             </div>
                                                         </div>
-                                                        <span className="text-gray-300 text-base leading-relaxed">
+                                                        <span className="text-gray-300 text-xs md:text-sm leading-relaxed">
                                                             {item}
                                                         </span>
                                                     </li>
@@ -160,19 +160,19 @@ const Process = () => {
 
                                         {/* Right Col: Outcome */}
                                         <div>
-                                            <h4 className="text-lg font-bold text-[#FFDA7B] mb-6 border-b border-[#FFDA7B]/30 pb-2 inline-block">
+                                            <h4 className="text-sm font-bold text-[#FFDA7B] mb-3 border-b border-[#FFDA7B]/30 pb-1 inline-block">
                                                 Outcome:
                                             </h4>
-                                            <ul className="space-y-4">
+                                            <ul className="space-y-2">
                                                 {/* @ts-ignore */}
                                                 {plan.outcomes?.map((outcome: string, i: number) => (
-                                                    <li key={i} className="flex items-start gap-3">
-                                                        <div className="mt-1 min-w-[18px]">
-                                                            <div className="w-4 h-4 mt-0.5 rounded-[2px] border border-white/40 flex items-center justify-center bg-transparent">
-                                                                <Check size={10} className="text-white" strokeWidth={3} />
+                                                    <li key={i} className="flex items-start gap-2.5">
+                                                        <div className="mt-0.5 min-w-[16px]">
+                                                            <div className="w-3.5 h-3.5 mt-0.5 rounded-[2px] border border-white/40 flex items-center justify-center bg-transparent">
+                                                                <Check size={9} className="text-white" strokeWidth={3} />
                                                             </div>
                                                         </div>
-                                                        <span className="text-gray-300 text-base leading-relaxed">
+                                                        <span className="text-gray-300 text-xs md:text-sm leading-relaxed">
                                                             {outcome}
                                                         </span>
                                                     </li>
@@ -184,7 +184,7 @@ const Process = () => {
                                     {/* Button */}
                                     <button
                                         onClick={() => smoothScrollTo('contact')}
-                                        className="w-full bg-[#FFDA7B] hover:bg-[#FBC02D] text-black font-bold py-5 rounded-full text-lg transition-all duration-300 transform hover:scale-[1.01] shadow-[0_4px_20px_0_rgba(255,218,123,0.3)]"
+                                        className="w-full bg-[#FFDA7B] hover:bg-[#FBC02D] text-black font-bold py-2.5 rounded-full text-sm transition-all duration-300 transform hover:scale-[1.01] shadow-[0_4px_20px_0_rgba(255,218,123,0.3)]"
                                     >
                                         Get started
                                     </button>
@@ -199,46 +199,46 @@ const Process = () => {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -20 }}
                             transition={{ duration: 0.3 }}
-                            className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 lg:gap-8 max-w-7xl mx-auto"
+                            className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-4 lg:gap-6 max-w-7xl mx-auto"
                         >
                             {podcastingPlans.map((plan, index) => (
                                 <div
                                     key={plan.name}
-                                    className="flex flex-col h-full bg-[#111] border border-white/10 rounded-2xl p-8 hover:border-[#FFDA7B]/50 transition-colors duration-300 group"
+                                    className="flex flex-col h-full bg-[#111] border border-white/10 rounded-2xl p-5 hover:border-[#FFDA7B]/50 transition-colors duration-300 group"
                                 >
-                                    <div className="mb-6">
-                                        <span className="inline-block px-4 py-1.5 rounded-md bg-[#222] text-[#FFDA7B] text-xs font-bold tracking-widest uppercase mb-4 border border-[#FFDA7B]/20">
+                                    <div className="mb-3">
+                                        <span className="inline-block px-2.5 py-0.5 rounded-md bg-[#222] text-[#FFDA7B] text-[11px] font-bold tracking-widest uppercase mb-2 border border-[#FFDA7B]/20">
                                             {plan.name}
                                         </span>
-                                        <p className="text-gray-300 text-lg leading-relaxed">
+                                        <p className="text-gray-300 text-sm leading-relaxed">
                                             {plan.description}
                                         </p>
                                     </div>
 
-                                    <ul className="space-y-4 mb-8 flex-grow">
+                                    <ul className="space-y-2 mb-4 flex-grow">
                                         {plan.items.map((item, i) => (
-                                            <li key={i} className="flex items-start gap-3">
-                                                <div className="mt-1 min-w-[18px]">
-                                                    <div className="w-4 h-4 mt-0.5 rounded-[2px] border border-white/40 flex items-center justify-center bg-transparent group-hover:border-[#FFDA7B] transition-colors">
-                                                        <Check size={10} className="text-white group-hover:text-[#FFDA7B]" strokeWidth={3} />
+                                            <li key={i} className="flex items-start gap-2.5">
+                                                <div className="mt-0.5 min-w-[16px]">
+                                                    <div className="w-3.5 h-3.5 mt-0.5 rounded-[2px] border border-white/40 flex items-center justify-center bg-transparent group-hover:border-[#FFDA7B] transition-colors">
+                                                        <Check size={9} className="text-white group-hover:text-[#FFDA7B]" strokeWidth={3} />
                                                     </div>
                                                 </div>
-                                                <span className="text-gray-400 text-sm md:text-[15px] leading-relaxed">
+                                                <span className="text-gray-400 text-xs leading-relaxed">
                                                     {item}
                                                 </span>
                                             </li>
                                         ))}
                                     </ul>
 
-                                    <div className="mb-8 pt-6 border-t border-white/10">
-                                        <p className="text-sm text-gray-300">
+                                    <div className="mb-4 pt-3 border-t border-white/10">
+                                        <p className="text-[11px] text-gray-300">
                                             <span className="text-[#FFDA7B] font-bold underline decoration-[#FFDA7B]/50 underline-offset-2">Outcome:</span> {/* @ts-ignore */}{plan.outcome}
                                         </p>
                                     </div>
 
                                     <button
                                         onClick={() => smoothScrollTo('contact')}
-                                        className="w-full bg-[#FFDA7B] hover:bg-[#FBC02D] text-black font-bold py-4 rounded-full transition-all duration-300 transform group-hover:scale-[1.02] shadow-[0_4px_14px_0_rgba(255,218,123,0.3)]"
+                                        className="w-full bg-[#FFDA7B] hover:bg-[#FBC02D] text-black font-bold py-2.5 rounded-full text-sm transition-all duration-300 transform group-hover:scale-[1.02] shadow-[0_4px_14px_0_rgba(255,218,123,0.3)]"
                                     >
                                         Get started
                                     </button>

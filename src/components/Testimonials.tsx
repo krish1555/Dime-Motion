@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Play, Pause, Volume2, VolumeX, Instagram } from "lucide-react";
 import { motion } from "framer-motion";
 import profilePic from "@/assets/2.jpeg";
-import bg9 from "@/assets/bg-9.jpg";
+import bg9 from "@/assets/b-1.png";
 
 const Testimonials = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -29,22 +29,9 @@ const Testimonials = () => {
   };
 
   return (
-    <section id="testimonials" className="py-24 relative overflow-hidden bg-black">
-      {/* Background Image: bg-6 (Natural Gold, No Dark Filter) */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src={bg9}
-          alt="Background"
-          className="w-full h-full object-cover"
-        />
-        {/* REMOVED: The dark overlay div. Keeping natural colors. */}
-
-        {/* Top Fade (into previous section) - Subtle */}
-        <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-black to-transparent opacity-80" />
-
-        {/* Bottom Fade (into Contact section) */}
-
-      </div>
+    <section id="testimonials" className="py-24 relative overflow-hidden bg-transparent">
+      {/* Minimal overlay for readability */}
+      <div className="absolute inset-0 z-0 bg-black/20" />
 
       <div className="container mx-auto px-6 relative z-10">
         <motion.div
@@ -68,7 +55,7 @@ const Testimonials = () => {
           className="max-w-5xl mx-auto"
         >
           {/* Increased glass opacity slightly to ensure text readability against potentially bright gold BG */}
-          <div className="relative rounded-3xl overflow-hidden border border-white/20 bg-black/40 backdrop-blur-xl shadow-2xl">
+          <div className="relative rounded-3xl overflow-hidden border border-white/20 bg-black/40 backdrop-blur-md shadow-2xl">
             <div className="grid grid-cols-1 lg:grid-cols-2">
               {/* Video Section */}
               <div className="relative aspect-[9/16] lg:aspect-auto h-[500px] lg:h-[600px] bg-black group cursor-pointer" onClick={togglePlay}>

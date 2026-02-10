@@ -70,14 +70,14 @@ const Navigation = () => {
       {/* Mobile Menu Backdrop */}
       {isMobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[55] lg:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
 
       {/* Mobile Menu Drawer */}
       <div
-        className={`fixed top-[80px] right-4 w-64 bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl z-40 transform transition-transform duration-300 ease-in-out lg:hidden border border-white/20 overflow-hidden ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-[150%]'
+        className={`fixed top-24 right-4 w-64 bg-[#111] border border-white/10 rounded-2xl shadow-2xl z-[60] transform transition-transform duration-300 ease-in-out lg:hidden overflow-hidden ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-[150%]'
           }`}
       >
         <div className="flex flex-col p-6 space-y-4">
@@ -86,7 +86,7 @@ const Navigation = () => {
               key={item.name}
               href={item.href}
               onClick={(e) => handleClick(e, item.href)}
-              className="text-black hover:text-gray-600 transition-colors duration-200 text-lg font-medium py-3 border-b border-gray-100"
+              className="text-white hover:text-[#FFDA7B] transition-colors duration-200 text-lg font-medium py-3 border-b border-white/10 last:border-0"
             >
               {item.name}
             </a>
