@@ -1,5 +1,6 @@
 import { useRef, useEffect } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -15,54 +16,59 @@ const FeatureBlock = ({
   description,
   image,
   align = "left",
+  isMobile,
 }: {
   number: string,
   title: string,
   description: string,
   image: string,
   align?: "left" | "right",
+  isMobile: boolean,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const textX = align === "left" ? -100 : 100;
-      const imgX = align === "left" ? 100 : -100;
 
-      // Entrance Timeline
+    const ctx = gsap.context(() => {
+      const textX = align === "left" ? (isMobile ? -30 : -100) : (isMobile ? 30 : 100);
+      const imgX = align === "left" ? (isMobile ? 30 : 100) : (isMobile ? -30 : -100);
+
+      // Entrance Timeline - Simplified for mobile
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
-          start: "top 85%",
-          toggleActions: "play reverse play reverse", // Reverses on scroll up
+          start: isMobile ? "top 95%" : "top 85%",
+          toggleActions: "play none none none", // Don't reverse on mobile to save CPU
+          once: isMobile, // Run once on mobile
         },
       });
 
       tl.from(textRef.current, {
         x: textX,
         opacity: 0,
-        duration: 1.1,
-        ease: "power3.out",
+        duration: isMobile ? 0.6 : 1.1,
+        ease: "power2.out",
       }, 0)
         .from(imageRef.current, {
           x: imgX,
           opacity: 0,
-          duration: 1.3,
-          ease: "power3.out",
+          duration: isMobile ? 0.8 : 1.3,
+          ease: "power2.out",
         }, 0);
 
-      // Continuous Float Animation (Independent)
-      // We use a separate tween so it persists naturally
-      gsap.to(imageRef.current, {
-        y: -10,
-        duration: 2.5,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        delay: 1.0, // Start floating as it settles
-      });
+      // Continuous Float Animation - Disable on mobile
+      if (!isMobile) {
+        gsap.to(imageRef.current, {
+          y: -10,
+          duration: 2.5,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+          delay: 1.0,
+        });
+      }
 
     }, containerRef);
 
@@ -89,9 +95,11 @@ const FeatureBlock = ({
         <div className="relative z-10 max-w-xl">
           <h3 className="font-zangezi text-5xl sm:text-6xl md:text-8xl text-white mb-6 tracking-tight relative">
             <span className="relative z-10">{title}</span>
-            <span className="absolute left-0 top-0 text-white/20 blur-2xl z-0 select-none opacity-50" aria-hidden="true">
-              {title}
-            </span>
+            {!isMobile && (
+              <span className="absolute left-0 top-0 text-white/20 blur-2xl z-0 select-none opacity-50" aria-hidden="true">
+                {title}
+              </span>
+            )}
           </h3>
 
           <div className={`h-[1px] w-24 md:w-32 bg-white/20 mb-6 md:mb-8 ${align === "right" ? "ml-auto" : "mr-auto"}`} />
@@ -111,9 +119,11 @@ const FeatureBlock = ({
         <img
           src={image}
           alt={title}
-          className="relative w-full max-w-[280px] md:max-w-[400px] object-contain z-10"
+          className="relative w-full max-w-[280px] md:max-w-[400px] object-contain z-10 will-change-transform"
           style={{
-            filter: "drop-shadow(0 0 2px rgba(255,255,255,0.8)) drop-shadow(0 0 30px rgba(255,255,255,0.4)) brightness(1.2)"
+            filter: isMobile
+              ? "none"
+              : "drop-shadow(0 0 2px rgba(255,255,255,0.8)) drop-shadow(0 0 30px rgba(255,255,255,0.4)) brightness(1.2)"
           }}
         />
       </div>
@@ -121,12 +131,13 @@ const FeatureBlock = ({
   );
 };
 
-const KineticLine = () => {
+const KineticLine = ({ isMobile }: { isMobile: boolean }) => {
   const { scrollYProgress } = useScroll({
     offset: ["start end", "end start"]
   });
 
-  const pathLength = useTransform(scrollYProgress, [0, 0.8], [0, 1]);
+  const pathLengthRaw = useTransform(scrollYProgress, [0, 0.8], [0, 1]);
+  const pathLength = useSpring(pathLengthRaw, { stiffness: 40, damping: 20 });
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
 
   return (
@@ -143,7 +154,7 @@ const KineticLine = () => {
           stroke="url(#lineGradient)"
           strokeWidth="3"
           strokeLinecap="round"
-          style={{ pathLength, opacity }}
+          style={{ pathLength: isMobile ? 1 : pathLength, opacity }}
           initial={{ pathLength: 0, opacity: 0 }}
           transition={{ duration: 1.5, ease: "easeInOut" }}
         />
@@ -161,6 +172,17 @@ const KineticLine = () => {
 };
 
 const About = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
     <section id="about" className="py-12 md:py-16 relative overflow-hidden bg-black/50">
       {/* Background Ambience */}
@@ -169,7 +191,7 @@ const About = () => {
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[120px] mix-blend-screen" />
       </div>
 
-      <KineticLine />
+      <KineticLine isMobile={isMobile} />
 
       <div className="container mx-auto px-6 relative z-10 w-full">
 
@@ -207,6 +229,7 @@ const About = () => {
             description="Influence your audience on every platform. We turn your expertise into a omnipresent media machine."
             image={influenceImg}
             align="left"
+            isMobile={isMobile}
           />
 
           <FeatureBlock
@@ -215,6 +238,7 @@ const About = () => {
             description="Spend less time marketing, more time innovating. Automated distribution systems that work while you sleep."
             image={innovateImg}
             align="right"
+            isMobile={isMobile}
           />
 
           <FeatureBlock
@@ -223,6 +247,7 @@ const About = () => {
             description="Strengthen your brand, grab bigger opportunities. Consistent visibility creates luck. We engineer visibility."
             image={scaleImg}
             align="left"
+            isMobile={isMobile}
           />
 
         </div>

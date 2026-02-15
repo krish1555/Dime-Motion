@@ -187,7 +187,8 @@ const IntroAnimation = () => {
                 console.log(`📍 Found ${logoPixels.length} logo pixels`);
 
                 // Create particles (more than logo pixels for fullness)
-                const particleCount = Math.min(400, logoPixels.length);
+                const isMobile = window.matchMedia('(max-width: 768px)').matches;
+                const particleCount = Math.min(isMobile ? 150 : 400, logoPixels.length);
 
                 for (let i = 0; i < particleCount; i++) {
                     // Pick random logo pixel as target

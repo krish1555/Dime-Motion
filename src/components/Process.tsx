@@ -183,8 +183,8 @@ const Process = () => {
 
                                     {/* Button */}
                                     <div className="relative group w-full">
-                                        {/* Animated border glow */}
-                                        <div className="absolute inset-[-1px] rounded-full overflow-hidden">
+                                        {/* Animated border glow - disabled on mobile */}
+                                        <div className="absolute inset-[-1px] rounded-full overflow-hidden hidden sm:block">
                                             <div
                                                 className="absolute inset-[-100%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_95%,#fff_100%)]"
                                                 style={{ animation: "spin 4s ease-in-out infinite" }}
@@ -247,8 +247,8 @@ const Process = () => {
                                     </div>
 
                                     <div className="relative group">
-                                        {/* Animated border glow */}
-                                        <div className="absolute inset-[-1px] rounded-full overflow-hidden">
+                                        {/* Animated border glow - disabled on mobile */}
+                                        <div className="absolute inset-[-1px] rounded-full overflow-hidden hidden sm:block">
                                             <div
                                                 className="absolute inset-[-100%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_95%,#fff_100%)]"
                                                 style={{ animation: "spin 4s ease-in-out infinite" }}

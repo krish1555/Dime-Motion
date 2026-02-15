@@ -18,7 +18,8 @@ const HowItWorks = () => {
     offset: ["start end", "end start"]
   });
 
-  const rotate = useTransform(scrollYProgress, [0, 1], [0, 68]);
+  const rotateRaw = useTransform(scrollYProgress, [0, 1], [0, 68]);
+  const rotate = useSpring(rotateRaw, { stiffness: 50, damping: 30, restDelta: 0.001 });
   const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
 
@@ -46,7 +47,7 @@ const HowItWorks = () => {
       <div className="absolute top-1/2 right-[-5%] md:right-[2%] -translate-y-1/2 w-[100%] md:w-[45%] aspect-square pointer-events-none z-0">
         <motion.div
           style={{ rotate }}
-          className="w-full h-full relative"
+          className="w-full h-full relative will-change-transform"
         >
           {/* Main Ring Image */}
           <img
@@ -54,11 +55,13 @@ const HowItWorks = () => {
             alt=""
             className="w-full h-full object-contain opacity-20 mix-blend-screen"
             style={{
-              filter: "drop-shadow(0 0 1px rgba(255,255,255,0.5)) drop-shadow(0 0 20px rgba(255,255,255,0.2))"
+              filter: isMobile
+                ? "none"
+                : "drop-shadow(0 0 1px rgba(255,255,255,0.5)) drop-shadow(0 0 20px rgba(255,255,255,0.2))"
             }}
           />
           {/* Subtle Glow behind */}
-          <div className="absolute inset-0 bg-white/5 rounded-full blur-[100px]" />
+          {!isMobile && <div className="absolute inset-0 bg-white/5 rounded-full blur-[100px]" />}
         </motion.div>
       </div>
 
