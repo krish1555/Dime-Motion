@@ -32,27 +32,30 @@ const FeatureBlock = ({
   useEffect(() => {
 
     const ctx = gsap.context(() => {
-      const textX = align === "left" ? (isMobile ? -30 : -100) : (isMobile ? 30 : 100);
-      const imgX = align === "left" ? (isMobile ? 30 : 100) : (isMobile ? -30 : -100);
+      const textX = isMobile ? 0 : (align === "left" ? -100 : 100);
+      const imgX = isMobile ? 0 : (align === "left" ? 100 : -100);
+      const entranceY = isMobile ? 20 : 0;
 
       // Entrance Timeline - Simplified for mobile
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
           start: isMobile ? "top 95%" : "top 85%",
-          toggleActions: "play none none none", // Don't reverse on mobile to save CPU
-          once: isMobile, // Run once on mobile
+          toggleActions: "play none none none",
+          once: isMobile,
         },
       });
 
       tl.from(textRef.current, {
         x: textX,
+        y: entranceY,
         opacity: 0,
         duration: isMobile ? 0.6 : 1.1,
         ease: "power2.out",
       }, 0)
         .from(imageRef.current, {
           x: imgX,
+          y: entranceY,
           opacity: 0,
           duration: isMobile ? 0.8 : 1.3,
           ease: "power2.out",
@@ -83,7 +86,7 @@ const FeatureBlock = ({
       {/* Text Side */}
       <div
         ref={textRef}
-        className={`relative z-10 flex flex-col ${align === "right" ? "lg:order-2 items-end text-right" : "lg:order-1 items-start text-left"
+        className={`relative z-10 flex flex-col will-change-transform ${align === "right" ? "lg:order-2 items-end text-right" : "lg:order-1 items-start text-left"
           }`}
       >
         {/* Number - Positioned relative to text block */}
@@ -186,10 +189,13 @@ const About = () => {
   return (
     <section id="about" className="py-12 md:py-16 relative overflow-hidden bg-black/50">
       {/* Background Ambience */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-900/10 rounded-full blur-[120px] mix-blend-screen" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[120px] mix-blend-screen" />
-      </div>
+      {/* Background Ambience - Simplified/Disabled on mobile for performance */}
+      {!isMobile && (
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-900/10 rounded-full blur-[120px] mix-blend-screen" />
+          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[120px] mix-blend-screen" />
+        </div>
+      )}
 
       <KineticLine isMobile={isMobile} />
 
