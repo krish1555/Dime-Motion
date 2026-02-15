@@ -46,7 +46,9 @@ const HowItWorks = () => {
       {/* Abstract Background Visual - The "Flywheel" */}
       <div className="absolute top-1/2 right-[-5%] md:right-[2%] -translate-y-1/2 w-[100%] md:w-[45%] aspect-square pointer-events-none z-0">
         <motion.div
-          style={{ rotate }}
+          style={isMobile ? { transformOrigin: 'center center' } : { rotate }}
+          animate={isMobile ? { rotate: [0, 360] } : undefined}
+          transition={isMobile ? { duration: 20, repeat: Infinity, ease: "linear" } : undefined}
           className="w-full h-full relative will-change-transform"
         >
           {/* Main Ring Image */}
@@ -55,9 +57,7 @@ const HowItWorks = () => {
             alt=""
             className="w-full h-full object-contain opacity-20 mix-blend-screen"
             style={{
-              filter: isMobile
-                ? "none"
-                : "drop-shadow(0 0 1px rgba(255,255,255,0.5)) drop-shadow(0 0 20px rgba(255,255,255,0.2))"
+              filter: "none"
             }}
           />
           {/* Subtle Glow behind */}
@@ -81,11 +81,11 @@ const HowItWorks = () => {
             </span>
             <h2 className="font-zangezi text-3xl sm:text-5xl md:text-6xl text-white leading-[1.1] tracking-tight">
               High Level <span
-                className="bg-clip-text text-transparent bg-[linear-gradient(90deg,#A8A8A8,#E8E8E8,#C0C0C0,#E8E8E8,#A8A8A8)]"
-                style={{
+                className={isMobile ? "text-white/90" : "bg-clip-text text-transparent bg-[linear-gradient(90deg,#A8A8A8,#E8E8E8,#C0C0C0,#E8E8E8,#A8A8A8)]"}
+                style={!isMobile ? {
                   textShadow: '0 0 40px rgba(232, 232, 232, 0.3)',
                   WebkitTextFillColor: 'transparent',
-                }}
+                } : {}}
               >Repurposing</span>
             </h2>
             <div className="h-[1px] w-24 bg-white/20 my-8" />
