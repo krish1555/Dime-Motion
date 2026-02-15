@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Check } from 'lucide-react';
+import { Check, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { smoothScrollTo } from '../utils/smoothScroll';
 
@@ -69,26 +69,26 @@ const Process = () => {
     const activePlans = activeTab === 'podcast' ? podcastingPlans : brandScalingPlans;
 
     return (
-        <section id="process" className="py-12 bg-transparent relative overflow-hidden">
+        <section id="process" className="pt-16 pb-8 md:pt-20 md:pb-10 bg-transparent relative overflow-hidden">
             {/* Background Texture Element (Optional - subtle circle hint) */}
-            <div className="absolute top-1/2 -left-32 w-96 h-96 bg-[#FFDA7B]/5 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute top-1/2 -right-32 w-96 h-96 bg-[#FFDA7B]/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute top-1/2 -left-32 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute top-1/2 -right-32 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none" />
 
             <div className="container mx-auto px-4 z-10 relative">
-                <div className="mb-8 text-center">
-                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                <div className="mb-6 text-center">
+                    <h2 className="font-zangezi text-4xl md:text-5xl font-bold text-white mb-6">
                         How to <span className="relative inline-block">
                             work with us
-                            <span className="absolute bottom-1 left-0 w-full h-1 bg-[#FFDA7B] rounded-full"></span>
+                            <span className="absolute bottom-1 left-0 w-full h-1 bg-white/40 rounded-full"></span>
                         </span>?
                     </h2>
 
                     {/* Toggle Switch */}
-                    <div className="flex justify-center mb-8">
+                    <div className="flex justify-center mb-6">
                         <div className="bg-[#1a1a1a] p-1 rounded-full inline-flex relative border border-white/10">
                             {/* Sliding Background */}
                             <motion.div
-                                className="absolute top-1 bottom-1 bg-transparent border border-[#FFDA7B] rounded-full z-0"
+                                className="absolute top-1 bottom-1 bg-transparent border border-white/40 rounded-full z-0"
                                 initial={false}
                                 animate={{
                                     left: activeTab === 'brand' ? '4px' : '50%',
@@ -99,13 +99,13 @@ const Process = () => {
                             />
                             <button
                                 onClick={() => setActiveTab('brand')}
-                                className={`relative z-10 px-5 py-1.5 rounded-full text-sm font-medium transition-colors duration-300 ${activeTab === 'brand' ? 'text-[#FFDA7B]' : 'text-gray-400 hover:text-white'}`}
+                                className={`relative z-10 px-5 py-1.5 rounded-full text-sm font-medium transition-colors duration-300 ${activeTab === 'brand' ? 'text-white' : 'text-gray-400 hover:text-white'}`}
                             >
                                 Brand Scaling
                             </button>
                             <button
                                 onClick={() => setActiveTab('podcast')}
-                                className={`relative z-10 px-5 py-1.5 rounded-full text-sm font-medium transition-colors duration-300 ${activeTab === 'podcast' ? 'text-[#FFDA7B]' : 'text-gray-400 hover:text-white'}`}
+                                className={`relative z-10 px-5 py-1.5 rounded-full text-sm font-medium transition-colors duration-300 ${activeTab === 'podcast' ? 'text-white' : 'text-gray-400 hover:text-white'}`}
                             >
                                 Podcasting
                             </button>
@@ -126,9 +126,9 @@ const Process = () => {
                         >
                             {/* @ts-ignore */}
                             {brandScalingPlans.map((plan, index) => (
-                                <div key={index} className="bg-[#111] border border-white/10 rounded-3xl p-6 md:p-8 hover:border-[#FFDA7B]/30 transition-colors duration-300 shadow-2xl">
+                                <div key={index} className="bg-[#111] border border-white/10 rounded-3xl p-5 md:p-6 hover:border-white/30 transition-colors duration-300 shadow-2xl">
                                     <div className="mb-6">
-                                        <span className="inline-block px-3 py-1 rounded-md bg-[#FFDA7B]/10 text-[#FFDA7B] text-xs font-bold tracking-widest uppercase mb-3 border border-[#FFDA7B]/20 shadow-[0_0_15px_rgba(255,218,123,0.1)]">
+                                        <span className="inline-block px-3 py-1 rounded-md bg-white/10 text-white text-xs font-bold tracking-widest uppercase mb-3 border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.05)]">
                                             {plan.name}
                                         </span>
                                         <p className="text-white text-base md:text-lg font-light leading-relaxed">
@@ -136,10 +136,10 @@ const Process = () => {
                                         </p>
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                                         {/* Left Col: Included */}
                                         <div>
-                                            <h4 className="text-sm font-bold text-[#FFDA7B] mb-3 border-b border-[#FFDA7B]/30 pb-1 inline-block">
+                                            <h4 className="text-sm font-bold text-white mb-3 border-b border-white/20 pb-1 inline-block">
                                                 What's included:
                                             </h4>
                                             <ul className="space-y-2">
@@ -160,7 +160,7 @@ const Process = () => {
 
                                         {/* Right Col: Outcome */}
                                         <div>
-                                            <h4 className="text-sm font-bold text-[#FFDA7B] mb-3 border-b border-[#FFDA7B]/30 pb-1 inline-block">
+                                            <h4 className="text-sm font-bold text-white mb-3 border-b border-white/20 pb-1 inline-block">
                                                 Outcome:
                                             </h4>
                                             <ul className="space-y-2">
@@ -182,12 +182,22 @@ const Process = () => {
                                     </div>
 
                                     {/* Button */}
-                                    <button
-                                        onClick={() => smoothScrollTo('contact')}
-                                        className="w-full bg-[#FFDA7B] hover:bg-[#FBC02D] text-black font-bold py-2.5 rounded-full text-sm transition-all duration-300 transform hover:scale-[1.01] shadow-[0_4px_20px_0_rgba(255,218,123,0.3)]"
-                                    >
-                                        Get started
-                                    </button>
+                                    <div className="relative group w-full">
+                                        {/* Animated border glow */}
+                                        <div className="absolute inset-[-1px] rounded-full overflow-hidden">
+                                            <div
+                                                className="absolute inset-[-100%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_95%,#fff_100%)]"
+                                                style={{ animation: "spin 4s ease-in-out infinite" }}
+                                            />
+                                        </div>
+                                        <button
+                                            onClick={() => smoothScrollTo('contact')}
+                                            className="relative w-full px-8 py-3.5 text-sm sm:text-base md:text-lg font-bold tracking-wide bg-[#FFDA7B] text-black rounded-full border border-[#FFDA7B]/50 hover:bg-[#FBC02D] hover:scale-[1.01] transition-all duration-300 shadow-[0_0_30px_rgba(255,218,123,0.3)] flex items-center justify-center gap-2"
+                                        >
+                                            Get started
+                                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                        </button>
+                                    </div>
                                 </div>
                             ))}
                         </motion.div>
@@ -204,10 +214,10 @@ const Process = () => {
                             {podcastingPlans.map((plan, index) => (
                                 <div
                                     key={plan.name}
-                                    className="flex flex-col h-full bg-[#111] border border-white/10 rounded-2xl p-5 hover:border-[#FFDA7B]/50 transition-colors duration-300 group"
+                                    className="flex flex-col h-full bg-[#111] border border-white/10 rounded-2xl p-4 hover:border-white/30 transition-colors duration-300 group"
                                 >
                                     <div className="mb-3">
-                                        <span className="inline-block px-2.5 py-0.5 rounded-md bg-[#222] text-[#FFDA7B] text-[11px] font-bold tracking-widest uppercase mb-2 border border-[#FFDA7B]/20">
+                                        <span className="inline-block px-2.5 py-0.5 rounded-md bg-[#222] text-white text-[11px] font-bold tracking-widest uppercase mb-2 border border-white/20">
                                             {plan.name}
                                         </span>
                                         <p className="text-gray-300 text-sm leading-relaxed">
@@ -219,8 +229,8 @@ const Process = () => {
                                         {plan.items.map((item, i) => (
                                             <li key={i} className="flex items-start gap-2.5">
                                                 <div className="mt-0.5 min-w-[16px]">
-                                                    <div className="w-3.5 h-3.5 mt-0.5 rounded-[2px] border border-white/40 flex items-center justify-center bg-transparent group-hover:border-[#FFDA7B] transition-colors">
-                                                        <Check size={9} className="text-white group-hover:text-[#FFDA7B]" strokeWidth={3} />
+                                                    <div className="w-3.5 h-3.5 mt-0.5 rounded-[2px] border border-white/40 flex items-center justify-center bg-transparent group-hover:border-white transition-colors">
+                                                        <Check size={9} className="text-white" strokeWidth={3} />
                                                     </div>
                                                 </div>
                                                 <span className="text-gray-400 text-xs leading-relaxed">
@@ -232,16 +242,26 @@ const Process = () => {
 
                                     <div className="mb-4 pt-3 border-t border-white/10">
                                         <p className="text-[11px] text-gray-300">
-                                            <span className="text-[#FFDA7B] font-bold underline decoration-[#FFDA7B]/50 underline-offset-2">Outcome:</span> {/* @ts-ignore */}{plan.outcome}
+                                            <span className="text-white font-bold underline decoration-white/30 underline-offset-2">Outcome:</span> {/* @ts-ignore */}{plan.outcome}
                                         </p>
                                     </div>
 
-                                    <button
-                                        onClick={() => smoothScrollTo('contact')}
-                                        className="w-full bg-[#FFDA7B] hover:bg-[#FBC02D] text-black font-bold py-2.5 rounded-full text-sm transition-all duration-300 transform group-hover:scale-[1.02] shadow-[0_4px_14px_0_rgba(255,218,123,0.3)]"
-                                    >
-                                        Get started
-                                    </button>
+                                    <div className="relative group">
+                                        {/* Animated border glow */}
+                                        <div className="absolute inset-[-1px] rounded-full overflow-hidden">
+                                            <div
+                                                className="absolute inset-[-100%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_95%,#fff_100%)]"
+                                                style={{ animation: "spin 4s ease-in-out infinite" }}
+                                            />
+                                        </div>
+                                        <button
+                                            onClick={() => smoothScrollTo('contact')}
+                                            className="relative w-full px-6 py-3 text-sm font-bold tracking-wide bg-[#FFDA7B] text-black rounded-full border border-[#FFDA7B]/50 hover:bg-[#FBC02D] hover:scale-[1.02] transition-all duration-300 shadow-[0_0_20px_rgba(255,218,123,0.3)] flex items-center justify-center gap-2"
+                                        >
+                                            Get started
+                                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                        </button>
+                                    </div>
                                 </div>
                             ))}
                         </motion.div>

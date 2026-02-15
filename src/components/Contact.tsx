@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Mail, Phone, Instagram, Linkedin, Users } from "lucide-react";
+import { motion } from "framer-motion";
 
 const Contact = () => {
   // Initialize Cal.com widget
@@ -40,98 +40,54 @@ const Contact = () => {
         elementOrSelector: "#cal-embed",
         calLink: "krish-dimemotion/30min",
         config: {
-          theme: "dark"
+          theme: "light"
         }
       });
 
       Cal.ns["30min"]("ui", {
         hideEventTypeDetails: false,
-        theme: "dark",
+        theme: "light",
         styles: {
           branding: {
-            brandColor: "#ffffff"
+            brandColor: "#000000"
           }
         }
       });
     }
   }, []);
 
-  const socialLinks = [
-    { platform: "Instagram", icon: Instagram, link: "https://instagram.com/dimemotion", color: "hover:text-pink-400" },
-    { platform: "LinkedIn", icon: Linkedin, link: "https://in.linkedin.com/in/krish-kumar-b1b49625a", color: "hover:text-blue-400" },
-    { platform: "Behance", icon: Users, link: "https://behance.net/dimemotion", color: "hover:text-purple-400" }
-  ];
-
   return (
-    <section id="contact" className="py-24 relative overflow-hidden bg-transparent min-h-screen">
-      {/* Minimal overlay */}
-      <div className="absolute inset-0 z-0 bg-black/40" />
+    <section id="contact" className="pt-16 pb-4 md:pt-20 md:pb-6 relative overflow-hidden bg-transparent">
+      {/* Light Overlay if needed, or just let white background show */}
+      {/* <div className="absolute inset-0 z-0 bg-white" /> */}
 
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mb-12">
-          <h2 className="font-heading text-4xl md:text-6xl font-bold mb-6 text-white hover:text-glow transition-all duration-300 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
+        <div className="text-center mb-4 md:mb-6">
+          <h2 className="font-zangezi text-4xl md:text-5xl font-bold mb-3 text-white hover:text-glow transition-all duration-300">
             Book a Discovery Call
           </h2>
-          <p className="text-xl text-gray-300 drop-shadow-md">
+          <p className="text-base text-gray-400 max-w-2xl mx-auto drop-shadow-md">
             Let's discuss how we can scale your brand
           </p>
         </div>
 
         {/* Main Cal.com Container */}
-        <div className="max-w-5xl mx-auto mb-20">
-          <div className="card-glass rounded-2xl p-1 md:p-8 bg-white/5 backdrop-blur-md border border-white/10 shadow-2xl">
-            {/* Cal.com Embed - Taller on mobile for vertical flow */}
-            <div id="cal-embed" className="w-full h-[850px] md:h-[700px] overflow-hidden rounded-xl bg-black"></div>
-          </div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.5, y: 50 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="max-w-4xl mx-auto mb-4"
+        >
+          <div className="rounded-2xl p-1 md:p-4 bg-white border border-gray-200 shadow-2xl">
+            {/* Cal.com Embed */}
+            <div id="cal-embed" className="w-full h-[600px] md:h-[480px] overflow-hidden rounded-xl bg-white"></div>
 
-        {/* Contact Info Footer (Secondary) */}
-        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-          {/* Email */}
-          <div className="card-glass rounded-2xl p-6 bg-white/5 backdrop-blur-md border border-white/5 hover:border-white/20 transition-all group">
-            <div className="flex flex-col items-center">
-              <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Mail className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="font-bold text-white mb-2">Email Us</h3>
-              <p className="text-gray-400 text-sm">krish@dimemotion.com</p>
-            </div>
-          </div>
 
-          {/* Phone */}
-          <div className="card-glass rounded-2xl p-6 bg-white/5 backdrop-blur-md border border-white/5 hover:border-white/20 transition-all group">
-            <div className="flex flex-col items-center">
-              <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Phone className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="font-bold text-white mb-2">Call Us</h3>
-              <p className="text-gray-400 text-sm">+91 70602 25281</p>
-            </div>
           </div>
+        </motion.div>
 
-          {/* Socials */}
-          <div className="card-glass rounded-2xl p-6 bg-white/5 backdrop-blur-md border border-white/5 hover:border-white/20 transition-all group">
-            <div className="flex flex-col items-center">
-              <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Users className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="font-bold text-white mb-4">Follow Us</h3>
-              <div className="flex space-x-4">
-                {socialLinks.map((social, index) => (
-                  <a
-                    key={index}
-                    href={social.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`${social.color} transition-colors`}
-                  >
-                    <social.icon className="w-5 h-5 text-gray-400 hover:text-white" />
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+
       </div>
     </section>
   );

@@ -1,0 +1,8 @@
+Model Information:
+* title:	Retro camera FED 2
+* source:	https://sketchfab.com/3d-models/retro-camera-fed-2-1471f344bb84458e99386d8fb83867c8
+* author:	Meilov (https://sketchfab.com/meilov3D)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works

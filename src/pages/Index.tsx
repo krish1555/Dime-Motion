@@ -1,76 +1,78 @@
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
-import Reels from "@/components/Reels";
+import HowItWorks from "@/components/HowItWorks";
+import ShortForm from "@/components/ShortForm";
+import LongForm from "@/components/LongForm";
+import PodcastTrailers from "@/components/PodcastTrailers";
 import CaseStudies from "@/components/CaseStudies";
-// import Services from "@/components/Services"; // TEMPORARILY DISABLED - Services page hidden from live website
-
-import Process from "@/components/Process";
-// import Portfolio from "@/components/Portfolio"; // TEMPORARILY DISABLED - Portfolio page hidden from live website
 import Testimonials from "@/components/Testimonials";
+import Process from "@/components/Process";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import FaqBot from "@/components/FaqBot";
-
-import heroBackground from "@/assets/b-1.png";
+import b1 from "@/assets/b-1.png";
 
 const Index = () => {
+  const textureStyle = {
+    backgroundImage: `url(${b1})`,
+    backgroundSize: '100% auto',
+    backgroundPosition: 'top center',
+    backgroundRepeat: 'repeat-y'
+  };
+
   return (
     <main className="min-h-screen bg-black overflow-x-hidden relative">
-      {/* 
-        GLOBAL BACKGROUND: 
-        Fixed position 'b-1' texture that spans the entire viewport.
-        High quality, seamless appearance as user scrolls.
-      */}
-      <div
-        className="fixed inset-0 z-0 opacity-100 brightness-110"
-        style={{
-          backgroundImage: `url(${heroBackground})`,
-          backgroundSize: 'auto', // Use original image size (no zoom)
-          backgroundRepeat: 'repeat', // Tile horizontally and vertically
-          backgroundPosition: 'top left'
-        }}
-      >
-        {/* Optional: subtle overlay to ensure text contrast throughout */}
-        <div className="absolute inset-0 bg-black/10" />
-      </div>
-
       <Navigation />
 
-      {/* Content Wrapper - Relative z-10 to sit above the fixed background */}
-      <div className="relative z-10">
-        <div id="hero" className="overflow-x-hidden">
+      <div className="relative z-10 font-golos">
+        {/* 1. Hero - b-1 */}
+        <div id="hero" className="overflow-x-hidden" style={textureStyle}>
           <Hero />
         </div>
-        <div id="about" className="overflow-x-hidden">
+
+        {/* 2. Agency Capabilities - Black */}
+        <div id="about" className="overflow-x-hidden bg-black">
           <About />
         </div>
 
-        <div id="reels" className="overflow-x-hidden">
-          <Reels />
+        {/* 3. System Architecture - Black (Conceptually linked to About) */}
+        <div id="how-it-works" className="overflow-x-hidden bg-black border-t border-white/5">
+          <HowItWorks />
         </div>
 
-        <div id="case-studies" className="overflow-x-hidden">
+        {/* 4. Short Form - b-1 */}
+        <div id="short-form" className="overflow-x-hidden" style={textureStyle}>
+          <ShortForm />
+        </div>
+
+        {/* 5. Long Form - Black */}
+        <div id="long-form" className="overflow-x-hidden bg-black">
+          <LongForm />
+        </div>
+
+        {/* 6. Podcast Trailers - b-1 */}
+        <div id="podcast-trailers" className="overflow-x-hidden" style={textureStyle}>
+          <PodcastTrailers />
+        </div>
+
+        {/* 7. Case Studies - Black */}
+        <div id="case-studies" className="bg-black">
           <CaseStudies />
         </div>
 
-        {/* <div id="services">
-          <Services />
-        </div> */}
-
-        <div id="process" className="overflow-x-hidden">
-          <Process />
-        </div>
-
-        {/* <div id="portfolio">
-          <Portfolio />
-        </div> */}
-
-        <div id="testimonials" className="overflow-x-hidden">
+        {/* 8. Testimonials - b-1 */}
+        <div id="testimonials" className="overflow-x-hidden" style={textureStyle}>
           <Testimonials />
         </div>
 
-        <div id="contact" className="overflow-x-hidden">
+        {/* 9. Process - Black */}
+        <div id="process" className="overflow-x-hidden bg-black">
+          <Process />
+        </div>
+
+        {/* 10. Contact - b-1 */}
+        <div id="contact" className="overflow-x-hidden" style={textureStyle}>
           <Contact />
         </div>
 

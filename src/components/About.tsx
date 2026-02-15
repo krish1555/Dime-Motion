@@ -1,109 +1,231 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import lo1 from "@/assets/lo1.jpg";
-import lo2 from "@/assets/lo2.jpg";
-import lo3 from "@/assets/lo3.jpg";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const ParallaxCard = ({ img, alt, text, depth = 0.5 }: { img: string, alt: string, text: string, depth?: number }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ["start end", "end start"]
-  });
+import influenceImg from "@/assets/influence.png";
+import innovateImg from "@/assets/innovate.png";
+import scaleImg from "@/assets/scale.png";
 
-  // Dynamic Parallax Range based on depth prop
-  // depth = 0.5 => moves from -50% to 50%
-  const range = depth * 100;
-  const y = useTransform(scrollYProgress, [0, 1], [`-${range}%`, `${range}%`]);
+gsap.registerPlugin(ScrollTrigger);
 
-  // Calculate required height to cover the movement area
-  // Base 100% + Total Movement (range * 2)
-  const heightPercent = 100 + (range * 2);
-  const topOffset = -range;
+const FeatureBlock = ({
+  number,
+  title,
+  description,
+  image,
+  align = "left",
+}: {
+  number: string,
+  title: string,
+  description: string,
+  image: string,
+  align?: "left" | "right",
+}) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const textX = align === "left" ? -100 : 100;
+      const imgX = align === "left" ? 100 : -100;
+
+      // Entrance Timeline
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 85%",
+          toggleActions: "play reverse play reverse", // Reverses on scroll up
+        },
+      });
+
+      tl.from(textRef.current, {
+        x: textX,
+        opacity: 0,
+        duration: 1.1,
+        ease: "power3.out",
+      }, 0)
+        .from(imageRef.current, {
+          x: imgX,
+          opacity: 0,
+          duration: 1.3,
+          ease: "power3.out",
+        }, 0);
+
+      // Continuous Float Animation (Independent)
+      // We use a separate tween so it persists naturally
+      gsap.to(imageRef.current, {
+        y: -10,
+        duration: 2.5,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        delay: 1.0, // Start floating as it settles
+      });
+
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, [align]);
 
   return (
     <div
-      ref={cardRef}
-      className="group bg-white rounded-3xl p-6 sm:p-8 border border-[#FFD700]/30 shadow-[0_0_30px_rgba(255,215,0,0.15)] overflow-hidden relative h-full"
+      ref={containerRef}
+      className="relative grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center mb-16 md:mb-24 last:mb-0 w-full max-w-7xl mx-auto"
     >
-      <div className="flex flex-col items-center text-center h-full relative z-10">
-        <div className="mb-8 relative w-32 h-32 rounded-full overflow-hidden shadow-inner border border-gray-100">
-          <motion.div
-            className="absolute inset-0 w-full bg-black"
-            style={{
-              y,
-              height: `${heightPercent}%`,
-              top: `${topOffset}%`
-            }}
-          >
-            <img
-              src={img}
-              alt={alt}
-              className="w-full h-full object-contain"
-            />
-          </motion.div>
+      {/* Text Side */}
+      <div
+        ref={textRef}
+        className={`relative z-10 flex flex-col ${align === "right" ? "lg:order-2 items-end text-right" : "lg:order-1 items-start text-left"
+          }`}
+      >
+        {/* Number - Positioned relative to text block */}
+        <span className={`text-[100px] md:text-[180px] leading-[0.8] font-bold text-white/10 select-none absolute -top-10 md:-top-24 z-0 ${align === "right" ? "-right-4" : "-left-4"
+          }`}>
+          {number}
+        </span>
+
+        <div className="relative z-10 max-w-xl">
+          <h3 className="font-zangezi text-5xl sm:text-6xl md:text-8xl text-white mb-6 tracking-tight relative">
+            <span className="relative z-10">{title}</span>
+            <span className="absolute left-0 top-0 text-white/20 blur-2xl z-0 select-none opacity-50" aria-hidden="true">
+              {title}
+            </span>
+          </h3>
+
+          <div className={`h-[1px] w-24 md:w-32 bg-white/20 mb-6 md:mb-8 ${align === "right" ? "ml-auto" : "mr-auto"}`} />
+
+          <p className="text-lg sm:text-xl text-gray-400 font-light leading-relaxed">
+            {description}
+          </p>
         </div>
-        <p className="text-lg text-black font-medium leading-relaxed">
-          {text}
-        </p>
       </div>
+
+      {/* Image Side */}
+      <div
+        ref={imageRef}
+        className={`relative z-10 flex justify-center items-center ${align === "right" ? "lg:order-1" : "lg:order-2"
+          }`}
+      >
+        <img
+          src={image}
+          alt={title}
+          className="relative w-full max-w-[280px] md:max-w-[400px] object-contain z-10"
+          style={{
+            filter: "drop-shadow(0 0 2px rgba(255,255,255,0.8)) drop-shadow(0 0 30px rgba(255,255,255,0.4)) brightness(1.2)"
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+const KineticLine = () => {
+  const { scrollYProgress } = useScroll({
+    offset: ["start end", "end start"]
+  });
+
+  const pathLength = useTransform(scrollYProgress, [0, 0.8], [0, 1]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+
+  return (
+    <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden mix-blend-screen">
+      <svg
+        className="w-full h-full opacity-30"
+        viewBox="0 0 1440 1600"
+        fill="none"
+        preserveAspectRatio="xMidYMid slice"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <motion.path
+          d="M-100,500 C600,500 1250,700 1250,950 S200,1350 -100,1500"
+          stroke="url(#lineGradient)"
+          strokeWidth="3"
+          strokeLinecap="round"
+          style={{ pathLength, opacity }}
+          initial={{ pathLength: 0, opacity: 0 }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
+        />
+        <defs>
+          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="15%" stopColor="rgba(255,255,255,0.2)" />
+            <stop offset="50%" stopColor="rgba(255,255,255,0.3)" />
+            <stop offset="85%" stopColor="rgba(255,255,255,0.2)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+          </linearGradient>
+        </defs>
+      </svg>
     </div>
   );
 };
 
 const About = () => {
   return (
-    <section id="about" className="py-24 relative overflow-hidden">
-      {/* Background Overlay & Bottom Fade */}
+    <section id="about" className="py-12 md:py-16 relative overflow-hidden bg-black/50">
+      {/* Background Ambience */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        {/* Dark overlay for readability */}
-
-        {/* Bottom Fade Blend */}
-        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-black to-transparent" />
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-900/10 rounded-full blur-[120px] mix-blend-screen" />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[120px] mix-blend-screen" />
       </div>
 
-      <div className="container mx-auto px-6 relative z-10">
-        {/* Header Section */}
-        <div className="text-center max-w-4xl mx-auto mb-20">
-          <div className="inline-block px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-sm font-semibold text-white/90 mb-6 uppercase tracking-wider">
-            What We Do
-          </div>
+      <KineticLine />
 
-          <h2 className="font-heading text-4xl md:text-6xl lg:text-7xl font-bold mb-8 text-white leading-tight">
-            <span className="border-b-4 border-white/30 pb-2">Influence</span> your audience, on <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-[linear-gradient(180deg,#FEE17D,#BC3345,#990134)]">
-              every platform
+      <div className="container mx-auto px-6 relative z-10 w-full">
+
+        {/* Header Block */}
+        <div className="mb-12 md:mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center mx-auto max-w-4xl"
+          >
+            <span className="block text-[#FFD700] text-xs font-bold tracking-[0.4em] uppercase mb-8 opacity-80">
+              Agency Capabilities
             </span>
-          </h2>
-
-          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed font-light">
-            We build authority engines fueled by long-form videos <br className="hidden md:block" />
-            (Podcasts, Interviews, YouTube videos etc), so
-          </p>
+            <h2 className="font-zangezi text-3xl sm:text-5xl md:text-6xl text-white leading-[1.1] tracking-tight">
+              We build <span
+                className="bg-clip-text text-transparent bg-[linear-gradient(90deg,#A8A8A8,#E8E8E8,#C0C0C0,#E8E8E8,#A8A8A8)]"
+                style={{
+                  textShadow: '0 0 40px rgba(232, 232, 232, 0.3)',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >authority engines</span> <br className="hidden md:block" />
+              fueled by long-form video.
+            </h2>
+          </motion.div>
         </div>
 
-        {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          <ParallaxCard
-            img={lo1}
-            alt="Save Time"
-            text="You can spend less time marketing and more time innovating"
-            depth={0.5}
-          />
-          <ParallaxCard
-            img={lo2}
-            alt="Get Seen"
-            text="Get your content in front of more people in ways they like to consume it"
-            depth={0.7}
-          />
-          <ParallaxCard
-            img={lo3}
-            alt="Trending"
-            text="Strengthen your brand, and grab bigger opportunities"
-            depth={0.9}
-          />
-        </div>
+        {/* Features Stack */}
+        <div className="flex flex-col w-full">
 
+          <FeatureBlock
+            number="01"
+            title="INFLUENCE"
+            description="Influence your audience on every platform. We turn your expertise into a omnipresent media machine."
+            image={influenceImg}
+            align="left"
+          />
+
+          <FeatureBlock
+            number="02"
+            title="INNOVATE"
+            description="Spend less time marketing, more time innovating. Automated distribution systems that work while you sleep."
+            image={innovateImg}
+            align="right"
+          />
+
+          <FeatureBlock
+            number="03"
+            title="SCALE"
+            description="Strengthen your brand, grab bigger opportunities. Consistent visibility creates luck. We engineer visibility."
+            image={scaleImg}
+            align="left"
+          />
+
+        </div>
       </div>
     </section>
   );

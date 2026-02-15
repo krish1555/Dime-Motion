@@ -29,7 +29,7 @@ const Testimonials = () => {
   };
 
   return (
-    <section id="testimonials" className="py-24 relative overflow-hidden bg-transparent">
+    <section id="testimonials" className="pt-16 pb-8 md:pt-20 md:pb-10 relative overflow-hidden bg-transparent">
       {/* Minimal overlay for readability */}
       <div className="absolute inset-0 z-0 bg-black/20" />
 
@@ -38,12 +38,12 @@ const Testimonials = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-8"
         >
-          <h2 className="font-heading text-4xl md:text-6xl font-bold mb-6 text-white text-shadow-lg drop-shadow-md">
+          <h2 className="font-zangezi text-4xl md:text-5xl font-bold mb-4 text-white text-shadow-lg drop-shadow-md">
             What Our Clients Say
           </h2>
-          <p className="text-gray-100 text-lg max-w-2xl mx-auto drop-shadow-md font-medium">
+          <p className="text-gray-100 text-base md:text-lg max-w-2xl mx-auto drop-shadow-md font-medium">
             Real results from creators and brands we've worked with
           </p>
         </motion.div>
@@ -52,13 +52,13 @@ const Testimonials = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
-          className="max-w-5xl mx-auto"
+          className="max-w-4xl mx-auto"
         >
           {/* Increased glass opacity slightly to ensure text readability against potentially bright gold BG */}
           <div className="relative rounded-3xl overflow-hidden border border-white/20 bg-black/40 backdrop-blur-md shadow-2xl">
             <div className="grid grid-cols-1 lg:grid-cols-2">
               {/* Video Section */}
-              <div className="relative aspect-[9/16] lg:aspect-auto h-[500px] lg:h-[600px] bg-black group cursor-pointer" onClick={togglePlay}>
+              <div className="relative aspect-[9/16] lg:aspect-auto h-[350px] lg:h-[420px] bg-black group cursor-pointer" onClick={togglePlay}>
                 <video
                   ref={videoRef}
                   className="w-full h-full object-cover"
@@ -73,7 +73,7 @@ const Testimonials = () => {
 
                 {/* Controls Overlay */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="w-20 h-20 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20">
+                  <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20">
                     {isPlaying ? (
                       <Pause className="w-8 h-8 text-white fill-current" />
                     ) : (
@@ -92,23 +92,23 @@ const Testimonials = () => {
               </div>
 
               {/* Content Section */}
-              <div className="p-8 lg:p-12 flex flex-col justify-center bg-transparent relative">
+              <div className="p-6 lg:p-8 flex flex-col justify-center bg-transparent relative">
                 {/* Subtle highlight */}
                 <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
 
                 <div className="relative z-10">
-                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/20 border border-blue-500/30 text-blue-200 text-sm font-semibold mb-8 backdrop-blur-sm">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/20 border border-blue-500/30 text-blue-200 text-xs font-semibold mb-6 backdrop-blur-sm">
                     <Instagram size={16} />
                     <span>Verified Creator</span>
                   </div>
 
-                  <blockquote className="text-2xl lg:text-3xl font-medium text-white leading-relaxed mb-8 drop-shadow-md">
+                  <blockquote className="text-sm sm:text-base md:text-lg lg:text-xl font-medium text-white leading-relaxed mb-5 drop-shadow-md">
                     "Working with the team has been an absolute game changer for my content. The quality, the speed, the understanding of the algorithm - it's all next level."
                   </blockquote>
 
                   <div className="flex items-center gap-6">
                     <div className="flex-shrink-0">
-                      <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-purple-500 to-blue-500 p-[2px]">
+                      <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-tr from-purple-500 to-blue-500 p-[2px]">
                         <div className="w-full h-full rounded-full overflow-hidden">
                           <img
                             src={profilePic}
@@ -119,10 +119,10 @@ const Testimonials = () => {
                       </div>
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold text-white mb-1 shadow-black drop-shadow-sm">
+                      <h3 className="text-lg md:text-xl font-bold text-white mb-1 shadow-black drop-shadow-sm">
                         Nate Leathers
                       </h3>
-                      <p className="text-gray-200 font-medium flex items-center gap-2 text-shadow-sm">
+                      <p className="text-gray-200 font-medium flex items-center gap-2 text-shadow-sm text-sm md:text-base">
                         <span>110k Insta Followers</span>
                         <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
                         <span className="text-blue-300">@nateleatherss</span>
@@ -130,14 +130,14 @@ const Testimonials = () => {
                     </div>
                   </div>
 
-                  <div className="mt-12 flex flex-wrap gap-4">
-                    <div className="px-6 py-3 rounded-xl bg-black/50 border border-white/10 text-center flex-1 backdrop-blur-md">
-                      <div className="text-3xl font-bold text-white mb-1">110K+</div>
-                      <div className="text-xs text-gray-400 uppercase tracking-wider">Followers</div>
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <div className="px-5 py-3 rounded-xl bg-black/50 border border-white/10 text-center flex-1 backdrop-blur-md">
+                      <div className="text-lg md:text-xl font-bold text-white mb-1">110K+</div>
+                      <div className="text-[10px] md:text-xs text-gray-400 uppercase tracking-wider">Followers</div>
                     </div>
-                    <div className="px-6 py-3 rounded-xl bg-black/50 border border-white/10 text-center flex-1 backdrop-blur-md">
-                      <div className="text-2xl font-bold text-white mb-1">$100k+</div>
-                      <div className="text-[10px] text-gray-400 uppercase tracking-wider">Generated from Content</div>
+                    <div className="px-5 py-3 rounded-xl bg-black/50 border border-white/10 text-center flex-1 backdrop-blur-md">
+                      <div className="text-lg md:text-xl font-bold text-white mb-1">$100k+</div>
+                      <div className="text-[10px] md:text-xs text-gray-400 uppercase tracking-wider">Generated from Content</div>
                     </div>
                   </div>
                 </div>

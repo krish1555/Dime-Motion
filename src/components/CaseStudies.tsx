@@ -1,44 +1,27 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, FileText, Smartphone } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { X, ArrowRight, Smartphone } from 'lucide-react';
 import cryptoVicPdf from '@/assets/Crypto Vic.pdf';
-import lukeDavisPdf from '@/assets/Luke Davis.pdf';
 import nateLeathersPdf from '@/assets/nate leathers.pdf';
+import cryptoVicPfp from '@/assets/crypto_vic_pfp.jpg';
+import nateLeathersPfp from '@/assets/nate_leathers_pfp.jpg';
+import bgTexture from "@/assets/b-1.png";
 
 // Import the Flywheel Component to embed it directly
-import HowItWorks from './HowItWorks';
+
 
 const CaseStudies = () => {
     const [selectedCase, setSelectedCase] = useState<number | null>(null);
     const [isMobile, setIsMobile] = useState(false);
     const [isLandscape, setIsLandscape] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
 
-    const caseStudies = [
-        {
-            id: 1,
-            title: "Crypto Vic",
-            description: "Innovative cryptocurrency platform branding and visual identity",
-            pdfPath: cryptoVicPdf,
-            gradient: "from-blue-600 to-purple-600",
-            hoverGradient: "from-blue-500 to-purple-500",
-        },
-        {
-            id: 2,
-            title: "Luke Davis",
-            description: "Personal brand development and creative storytelling",
-            pdfPath: lukeDavisPdf,
-            gradient: "from-purple-600 to-pink-600",
-            hoverGradient: "from-purple-500 to-pink-500",
-        },
-        {
-            id: 3,
-            title: "Nate Leathers",
-            description: "Strategic scaling for premium e-commerce brand",
-            pdfPath: nateLeathersPdf,
-            gradient: "from-orange-600 to-red-600",
-            hoverGradient: "from-orange-500 to-red-500",
-        },
-    ];
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start end", "end start"]
+    });
+
+    const parallaxY = useTransform(scrollYProgress, [0, 1], [0, -50]);
 
     useEffect(() => {
         const checkDevice = () => {
@@ -56,6 +39,25 @@ const CaseStudies = () => {
         };
     }, []);
 
+    const caseStudies = [
+        {
+            id: 1,
+            title: "Crypto Vic",
+            category: "BRAND / VISUAL IDENTITY",
+            description: "Innovative cryptocurrency platform branding.",
+            pdfPath: cryptoVicPdf,
+            color: "from-blue-900/40 to-purple-900/40"
+        },
+        {
+            id: 2,
+            title: "Nate Leathers",
+            category: "ECOMMERCE STRATEGY",
+            description: "Scaling premium brands.",
+            pdfPath: nateLeathersPdf,
+            color: "from-orange-900/40 to-red-900/40"
+        },
+    ];
+
     const handleOpenCase = (id: number) => {
         setSelectedCase(id);
         document.body.style.overflow = 'hidden';
@@ -69,78 +71,117 @@ const CaseStudies = () => {
     const selectedCaseStudy = caseStudies.find(cs => cs.id === selectedCase);
 
     return (
-        <section id="case-studies" className="pt-24 pb-0 bg-transparent relative overflow-hidden">
-            {/* Minimal overlay if needed for text readability */}
-            <div className="absolute inset-0 z-0 bg-black/30"></div>
+        <section id="case-studies" className="pt-16 pb-8 md:pt-20 md:pb-10 bg-transparent relative">
+            <div className="container mx-auto px-4 md:px-8 relative z-10 pt-0 mb-8 md:mb-12" ref={containerRef}>
 
-            <div className="container mx-auto px-4 relative z-10 pt-20 mb-32">
-                {/* Section Header */}
+                {/* Editorial Header */}
                 <motion.div
-                    initial={{ opacity: 0, y: 50 }}
+                    initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                     viewport={{ once: true }}
-                    className="text-center mb-16"
+                    className="mb-6 md:mb-8"
                 >
-                    <h2 className="font-heading text-4xl md:text-6xl font-bold mb-4 text-white">
+                    <h2 className="font-zangezi text-4xl md:text-5xl font-bold mb-4 text-white tracking-tight">
                         Case Studies
                     </h2>
-                    <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+                    <p className="text-lg md:text-xl text-gray-400 max-w-2xl font-light">
                         Explore our success stories and creative solutions
                     </p>
                 </motion.div>
 
-                {/* Case Study Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-                    {caseStudies.map((caseStudy, index) => (
-                        <motion.div
-                            key={caseStudy.id}
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: index * 0.2 }}
-                            viewport={{ once: true }}
-                            whileHover={{ y: -10, scale: 1.02 }}
-                            onClick={() => handleOpenCase(caseStudy.id)}
-                            className="relative group cursor-pointer"
-                        >
-                            <div className="relative bg-gradient-to-br from-gray-900 to-black rounded-3xl overflow-hidden border border-white/10 shadow-2xl h-96">
-                                <div className={`absolute inset-0 bg-gradient-to-br ${caseStudy.gradient} opacity-20 group-hover:opacity-30 transition-opacity duration-300`} />
+                {/* Asymmetrical Editorial Gallery - Refined Layout to Prevent Image Blur */}
+                <div className="flex flex-col md:flex-row justify-center gap-8 md:gap-12 lg:gap-24 w-full">
 
-                                <div className="relative h-full flex flex-col justify-between p-10">
-                                    <div>
-                                        <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center mb-6 text-white backdrop-blur-md border border-white/10">
-                                            <FileText className="w-8 h-8" />
-                                        </div>
-                                        <h3 className="text-3xl font-bold text-white mb-3">
-                                            {caseStudy.title}
-                                        </h3>
-                                        <p className="text-gray-400 text-lg leading-relaxed">
-                                            {caseStudy.description}
-                                        </p>
-                                    </div>
+                    {/* Panel A - Crypto Vic */}
+                    {/* Panel A - Crypto Vic */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 40 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, ease: [0.2, 0.9, 0.2, 1] }}
+                        viewport={{ once: true }}
+                        onClick={() => handleOpenCase(caseStudies[0].id)}
+                        className="group relative w-full max-w-[400px] h-[400px] cursor-pointer rounded-2xl mx-auto md:mx-0 overflow-hidden border border-white/5 hover:border-white/20 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(255,255,255,0.05)] bg-[#0A0A0A]"
+                    >
+                        {/* Premium Dark Surface & Ambient Glow */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-[#050505] opacity-100 z-0" />
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.03),transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0" />
 
-                                    <div className="flex items-center gap-2 text-blue-400 font-medium group-hover:text-blue-300 transition-colors">
-                                        <span>View Strategy</span>
-                                        <motion.span
-                                            animate={{ x: [0, 5, 0] }}
-                                            transition={{ duration: 1.5, repeat: Infinity }}
-                                        >
-                                            →
-                                        </motion.span>
-                                    </div>
-                                </div>
+                        {/* Content Layout */}
+                        <div className="relative z-10 w-full h-full p-6 md:p-8 flex flex-col justify-between">
+                            {/* Top Label */}
+                            <div className="opacity-0 group-hover:opacity-100 transform -translate-y-2 group-hover:translate-y-0 transition-all duration-500 delay-100">
+                                <span className="text-[10px] font-bold tracking-[0.3em] text-gray-500 uppercase border border-white/10 px-3 py-1 rounded-full">{caseStudies[0].category}</span>
                             </div>
-                        </motion.div>
-                    ))}
+
+                            {/* Center Hero Typography */}
+                            <div className="flex flex-col justify-center items-center text-center flex-grow">
+                                <h3 className="text-3xl md:text-4xl font-zangezi text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-500 group-hover:to-white transition-all duration-700 leading-tight mb-4">
+                                    {caseStudies[0].title}
+                                </h3>
+                                <div className="h-[1px] w-12 bg-white/20 group-hover:w-24 transition-all duration-500 mb-6" />
+                                <p className="text-gray-500 font-light text-sm max-w-[200px] group-hover:text-gray-300 transition-colors duration-500">
+                                    {caseStudies[0].description}
+                                </p>
+                            </div>
+
+                            {/* Bottom Action */}
+                            <div className="flex justify-center opacity-60 group-hover:opacity-100 transition-opacity duration-500">
+                                <span className="inline-flex items-center text-xs font-medium tracking-widest text-white uppercase group-hover:text-glow transition-all">
+                                    View Strategy <ArrowRight className="w-3 h-3 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+                                </span>
+                            </div>
+                        </div>
+                    </motion.div>
+
+                    {/* Panel B - Nate Leathers */}
+                    {/* Panel B - Nate Leathers */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.85, delay: 0.1, ease: [0.2, 0.9, 0.2, 1] }}
+                        viewport={{ once: true }}
+                        onClick={() => handleOpenCase(caseStudies[1].id)}
+                        className="group relative w-full max-w-[400px] h-[400px] md:self-end cursor-pointer rounded-2xl mx-auto md:mx-0 overflow-hidden border border-white/5 hover:border-white/20 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(255,255,255,0.05)] bg-[#0A0A0A]"
+                    >
+                        {/* Premium Dark Surface & Ambient Glow */}
+                        <div className="absolute inset-0 bg-gradient-to-bl from-gray-900 via-black to-[#050505] opacity-100 z-0" />
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.03),transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0" />
+
+                        {/* Content Layout */}
+                        <div className="relative z-10 w-full h-full p-8 md:p-10 flex flex-col justify-between">
+                            {/* Top Label */}
+                            <div className="opacity-0 group-hover:opacity-100 transform -translate-y-2 group-hover:translate-y-0 transition-all duration-500 delay-100 text-right w-full">
+                                <span className="text-[10px] font-bold tracking-[0.3em] text-gray-500 uppercase border border-white/10 px-3 py-1 rounded-full">{caseStudies[1].category}</span>
+                            </div>
+
+                            {/* Center Hero Typography */}
+                            <div className="flex flex-col justify-center items-center text-center flex-grow">
+                                <h3 className="text-3xl md:text-4xl font-zangezi text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-500 group-hover:to-white transition-all duration-700 leading-tight mb-4">
+                                    {caseStudies[1].title}
+                                </h3>
+                                <div className="h-[1px] w-12 bg-white/20 group-hover:w-24 transition-all duration-500 mb-6" />
+                                <p className="text-gray-500 font-light text-sm max-w-[200px] group-hover:text-gray-300 transition-colors duration-500">
+                                    {caseStudies[1].description}
+                                </p>
+                            </div>
+
+                            {/* Bottom Action */}
+                            <div className="flex justify-center opacity-60 group-hover:opacity-100 transition-opacity duration-500">
+                                <span className="inline-flex items-center text-xs font-medium tracking-widest text-white uppercase group-hover:text-glow transition-all">
+                                    Read Story <ArrowRight className="w-3 h-3 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+                                </span>
+                            </div>
+                        </div>
+                    </motion.div>
+
                 </div>
+
             </div>
 
-            {/* Embedded Flywheel Section at the bottom */}
-            <div className="relative z-10">
-                <HowItWorks />
-            </div>
 
-            {/* PDF Modal */}
+
+            {/* PDF Modal (Unchanged functionality) */}
             <AnimatePresence>
                 {selectedCase && selectedCaseStudy && (
                     <motion.div

@@ -150,7 +150,7 @@ const Reels = () => {
     <section
       id="reels"
       ref={sectionRef}
-      className="py-16 relative overflow-hidden flex flex-col justify-center min-h-screen bg-transparent"
+      className="py-12 relative overflow-hidden flex flex-col justify-center min-h-screen bg-transparent"
       onWheel={handleWheel}
     >
       {/* Reduced local background opacity to let global texture show through, or remove entirely if desired */}
@@ -158,7 +158,7 @@ const Reels = () => {
 
 
       {/* --- CONTENT --- */}
-      <div className="container mx-auto px-4 relative z-10 space-y-32">
+      <div className="container mx-auto px-4 relative z-10 space-y-16">
 
         {/* --- SECTION 1: SHORT FORM --- */}
         <div>
@@ -166,18 +166,18 @@ const Reels = () => {
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-32"
+            className="text-center mb-8 md:mb-12"
           >
             <h2 className="font-heading text-4xl md:text-6xl font-bold mb-4 text-white hover:text-glow transition-all duration-300">
               <span className="text-white">Short Form That Converts</span>
             </h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto drop-shadow-md">
+            <p className="text-base md:text-xl text-gray-300 max-w-2xl mx-auto drop-shadow-md">
               Immerse yourself in our latest creative showcases
             </p>
           </motion.div>
 
           <div
-            className="relative h-[500px] w-full max-w-7xl mx-auto flex items-center justify-center perspective-2000"
+            className="relative h-[300px] sm:h-[350px] md:h-[450px] w-full max-w-7xl mx-auto flex items-center justify-center perspective-2000"
             ref={containerRef}
             style={{ perspective: '1000px' }}
           >
@@ -269,11 +269,11 @@ const Reels = () => {
 
         {/* --- SECTION 2: LONG FORM --- */}
         <div className="max-w-7xl mx-auto px-4">
-          <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-center mb-12">
+          <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-center mb-8">
             <h3 className="font-heading text-3xl md:text-5xl font-bold mb-4 text-white hover:text-glow transition-all duration-300">
               Featured Long Form Content
             </h3>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto drop-shadow-md">
+            <p className="text-base md:text-xl text-gray-300 max-w-3xl mx-auto drop-shadow-md">
               Explore our extended creative narratives
             </p>
           </motion.div>
@@ -298,11 +298,11 @@ const Reels = () => {
 
         {/* --- SECTION 3: PODCAST TRAILERS --- */}
         <div className="max-w-7xl mx-auto px-4">
-          <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-center mb-12">
+          <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-center mb-8">
             <h3 className="font-heading text-3xl md:text-5xl font-bold mb-4 text-white hover:text-glow transition-all duration-300">
               Podcast Trailers
             </h3>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto drop-shadow-md">
+            <p className="text-base md:text-xl text-gray-300 max-w-3xl mx-auto drop-shadow-md">
               Engaging teasers that drive full-episode listens
             </p>
           </motion.div>
@@ -325,12 +325,7 @@ const Reels = () => {
           </div>
         </div>
 
-        {/* Instagram Link */}
-        <div className="text-center mt-12 mb-8">
-          <a href="https://www.instagram.com/dime.motion/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 px-8 py-4 bg-white/10 backdrop-blur-md text-white rounded-full font-bold shadow-lg border border-white/20 hover:scale-105 hover:bg-white/20 transition-all duration-300">
-            <span>Follow Us On Instagram</span>
-          </a>
-        </div>
+
       </div>
     </section>
   );

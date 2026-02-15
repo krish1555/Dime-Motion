@@ -7,11 +7,9 @@ const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { name: 'Home', href: '#hero' },
     { name: 'About', href: '#about' },
-    { name: 'Portfolio', href: '#reels' },
-    { name: 'Case Studies', href: '#case-studies' },
-    { name: 'Testimonials', href: '#testimonials' },
+    { name: 'Work', href: '#short-form' },
+    { name: 'Testimonial', href: '#testimonials' },
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -25,28 +23,28 @@ const Navigation = () => {
 
   return (
     <>
-      <nav className="fixed top-6 left-1/2 -translate-x-1/2 w-[90%] md:w-[70%] bg-black/40 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl z-50 transition-all duration-300">
-        <div className="px-6 py-3 relative">
-          <div className="flex items-center justify-between">
-            {/* Logo - Initially hidden, revealed by intro animation */}
+      <nav className="fixed top-6 left-1/2 -translate-x-1/2 w-auto min-w-[320px] md:min-w-[500px] bg-black/40 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl z-50 transition-all duration-300">
+        <div className="px-8 py-3 relative">
+          <div className="flex items-center justify-between gap-12">
+            {/* Logo */}
             <div className="flex-shrink-0">
               <img
                 id="navbar-logo"
                 src={logo}
                 alt="Dime Motion Logo"
-                className="h-10 w-auto object-contain transition-opacity duration-300"
+                className="h-8 w-auto object-contain transition-opacity duration-300"
                 style={{ opacity: 0 }}
               />
             </div>
 
-            {/* Desktop Navigation - Centered */}
-            <div className="hidden lg:flex items-center justify-center space-x-12 flex-1">
+            {/* Desktop Navigation - Wide Spacing */}
+            <div className="hidden lg:flex items-center justify-center space-x-12">
               {navItems.map((item) => (
                 <a
                   key={item.name}
                   href={item.href}
                   onClick={(e) => handleClick(e, item.href)}
-                  className="text-white/90 hover:text-white transition-colors duration-200 text-sm font-medium tracking-wide"
+                  className="text-white/70 hover:text-white transition-all duration-300 text-[10px] font-bold tracking-[0.3em] uppercase"
                 >
                   {item.name}
                 </a>

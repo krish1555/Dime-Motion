@@ -1,12 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 const HowItWorks = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const flywheelRef = useRef<HTMLDivElement>(null);
-  const labelsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -16,264 +13,141 @@ const HowItWorks = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Platform labels data
-  const platforms = [
-    { name: "LinkedIn Posts", icon: "linkedin", position: "top" },
-    { name: "Instagram reels", icon: "instagram", position: "top-right" },
-    { name: "YouTube Shorts", icon: "youtube", position: "right" },
-    { name: "Instagram Carousels", icon: "instagram", position: "bottom-right" },
-    { name: "TikTok Videos", icon: "tiktok", position: "bottom-left" },
-    { name: "LinkedIn Carousels", icon: "linkedin", position: "left" },
-    { name: "YouTube Long Form", icon: "youtube", position: "top-left" },
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  const rotate = useTransform(scrollYProgress, [0, 1], [0, 68]);
+  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+
+  const platformGroups = [
+    {
+      label: "Short Form Video",
+      items: ["01 / YouTube Shorts", "02 / Instagram Reels", "03 / TikTok"],
+      align: "left"
+    },
+    {
+      label: "Professional Network",
+      items: ["04 / LinkedIn Posts", "05 / Carousels"],
+      align: "right"
+    },
+    {
+      label: "Long Form",
+      items: ["06 / YouTube Strategy", "07 / Podcast Clips"],
+      align: "left"
+    }
   ];
 
-  // Register ScrollTrigger plugin
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-  }, []);
-
-  useEffect(() => {
-    if (!sectionRef.current || !flywheelRef.current) return;
-
-    const flywheel = flywheelRef.current;
-    const labels = labelsRef.current.filter(Boolean);
-    const button = buttonRef.current;
-
-    // Set initial state
-    gsap.set(flywheel, {
-      y: 600, // Much lower so heading scrolls out of view
-      opacity: 0,
-      rotation: 0,
-    });
-
-    gsap.set(labels, {
-      opacity: 0,
-      y: 20,
-    });
-
-    if (button) {
-      gsap.set(button, {
-        opacity: 0,
-        y: 20,
-        scale: 0.8, // Start slightly smaller for pop effect
-      });
-    }
-
-    // Create pinned scroll animation
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "center center",
-        end: "+=250%",
-        pin: true,
-        scrub: 1.5,
-        anticipatePin: 1,
-      },
-    });
-
-    // Animate flywheel moving up and rotating
-    tl.to(flywheel, {
-      y: 0,
-      opacity: 1,
-      rotation: 360,
-      ease: "power2.out",
-      duration: 1.5,
-    });
-
-    // Animate labels appearing sequentially
-    labels.forEach((label, index) => {
-      if (label) {
-        tl.to(
-          label,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.15,
-            ease: "power1.inOut",
-          },
-          0.3 + index * 0.08 // Stagger timing during rotation
-        );
-      }
-    });
-
-    // Animate Book a Call button POPPING at the end (Apple style)
-    if (button) {
-      tl.to(
-        button,
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          ease: "elastic.out(1, 0.4)", // Apple-style spring/pop
-        },
-        1.4 // Triggers just as flywheel rotation settles (duration 1.5)
-      );
-    }
-
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-  }, []);
-
-  // Helper to get icon component
-  const getIcon = (iconName: string) => {
-    switch (iconName) {
-      case "linkedin":
-        return (
-          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="#0A66C2">
-            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-          </svg>
-        );
-      case "instagram":
-        return (
-          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="url(#instagram-gradient)">
-            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-          </svg>
-        );
-      case "youtube":
-        return (
-          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="#FF0000">
-            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-          </svg>
-        );
-      case "tiktok":
-        return (
-          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
-          </svg>
-        );
-      default:
-        return null;
-    }
-  };
-
-  const getLayoutStyles = (index: number, total: number) => {
-    const angleStep = (2 * Math.PI) / total;
-    const angle = index * angleStep - Math.PI / 2;
-    const radius = isMobile ? 42 : 30; // Mobile radius 42 (pushed out), Desktop 30
-
-    const x = 50 + radius * Math.cos(angle);
-    const y = 50 + radius * Math.sin(angle);
-
-    const style = {
-      left: `${x}%`,
-      top: `${y}%`,
-      transform: 'translate(-50%, -50%)',
-    };
-
-    const angleDeg = (angle * 180) / Math.PI;
-    const normalizedAngle = (angleDeg + 360) % 360;
-
-    let flexClass = 'flex-row text-left';
-
-    if (normalizedAngle > 260 && normalizedAngle < 280) {
-      flexClass = 'flex-col text-center pb-4';
-    }
-    else if (normalizedAngle > 90 && normalizedAngle < 270) {
-      flexClass = 'flex-row-reverse text-right';
-    }
-
-    return { style, flexClass };
-  };
-
   return (
-    <>
-      <svg width="0" height="0" style={{ position: "absolute" }}>
-        <defs>
-          <linearGradient id="flywheel-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FFF176" />
-            <stop offset="12%" stopColor="#CDDC39" />
-            <stop offset="25%" stopColor="#66BB6A" />
-            <stop offset="37%" stopColor="#26C6DA" />
-            <stop offset="50%" stopColor="#42A5F5" />
-            <stop offset="62%" stopColor="#5C6BC0" />
-            <stop offset="75%" stopColor="#7E57C2" />
-            <stop offset="87%" stopColor="#AB47BC" />
-            <stop offset="100%" stopColor="#EC407A" />
-          </linearGradient>
-          <linearGradient id="instagram-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#833AB4" />
-            <stop offset="50%" stopColor="#FD1D1D" />
-            <stop offset="100%" stopColor="#FCB045" />
-          </linearGradient>
-        </defs>
-      </svg>
+    <section ref={containerRef} id="how-it-works" className="relative flex items-center bg-transparent overflow-hidden pt-16 pb-8 md:pt-20 md:pb-10">
+      {/* Abstract Background Visual - The "Flywheel" */}
+      <div className="absolute top-1/2 right-[-5%] md:right-[2%] -translate-y-1/2 w-[100%] md:w-[45%] aspect-square pointer-events-none z-0">
+        <motion.div
+          style={{ rotate }}
+          className="w-full h-full relative"
+        >
+          {/* Main Ring Image */}
+          <img
+            src="/rings.png"
+            alt=""
+            className="w-full h-full object-contain opacity-20 mix-blend-screen"
+            style={{
+              filter: "drop-shadow(0 0 1px rgba(255,255,255,0.5)) drop-shadow(0 0 20px rgba(255,255,255,0.2))"
+            }}
+          />
+          {/* Subtle Glow behind */}
+          <div className="absolute inset-0 bg-white/5 rounded-full blur-[100px]" />
+        </motion.div>
+      </div>
 
-      <section ref={sectionRef} id="how-it-works" className="py-24 bg-transparent relative overflow-hidden min-h-screen flex items-center">
-        {/* Background effects */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/20 via-black/80 to-black pointer-events-none" />
+      <div className="container mx-auto px-6 relative z-10 grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
 
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="font-heading text-4xl md:text-6xl font-bold mb-4 text-white">
-              High Level <span className="text-transparent bg-clip-text bg-[linear-gradient(to_right,#990134,#BC3345,#FEE17D)]">Repurposing</span>
+        {/* Left Column - Typography & Content */}
+        <div className="md:col-span-7 lg:col-span-6 flex flex-col justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            viewport={{ once: true }}
+            className="mb-12 md:mb-20"
+          >
+            <span className="block text-[#FFD700] text-xs font-bold tracking-[0.4em] uppercase mb-8 opacity-80">
+              System Architecture
+            </span>
+            <h2 className="font-zangezi text-3xl sm:text-5xl md:text-6xl text-white leading-[1.1] tracking-tight">
+              High Level <span
+                className="bg-clip-text text-transparent bg-[linear-gradient(90deg,#A8A8A8,#E8E8E8,#C0C0C0,#E8E8E8,#A8A8A8)]"
+                style={{
+                  textShadow: '0 0 40px rgba(232, 232, 232, 0.3)',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >Repurposing</span>
             </h2>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              We build bulletproof content flywheels for personal brands to grow on multiple platforms with high volume of content
+            <div className="h-[1px] w-24 bg-white/20 my-8" />
+            <p className="text-lg md:text-2xl text-gray-400 font-light max-w-xl leading-relaxed">
+              We build bulletproof content flywheels for personal brands to grow on multiple platforms with high volume of content.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="relative w-full max-w-[800px] h-[450px] md:h-[600px] lg:h-[800px] mx-auto flex items-center justify-center mt-[-40px] md:mt-0">
-            <div className="absolute inset-0 w-full h-full flex items-center justify-center scale-[0.65] sm:scale-75 md:scale-100 origin-center pointer-events-none">
-              <div ref={flywheelRef} className="relative w-full h-full flex items-center justify-center pointer-events-auto">
-                {/* Custom Rings Image */}
-                <img
-                  src="/rings.png"
-                  alt="Content Flywheel Rings"
-                  className="w-[45%] max-w-[500px] object-contain"
+          {/* Call to Action */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="mt-8"
+          >
+            <div className="relative group inline-block">
+              {/* Animated border glow */}
+              <div className="absolute inset-[-1px] rounded-full overflow-hidden">
+                <div
+                  className="absolute inset-[-100%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_95%,#fff_100%)]"
+                  style={{ animation: "spin 4s ease-in-out infinite" }}
                 />
-
-                <div className="absolute inset-0 m-auto w-[60%] h-[60%] rounded-full border border-gray-700/50 pointer-events-none" />
-
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <h3 className="text-white text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight">Content</h3>
-                    <h3 className="text-white text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight">Flywheel</h3>
-                  </div>
-                </div>
-
-                {platforms.map((platform, index) => {
-                  const { style, flexClass } = getLayoutStyles(index, platforms.length);
-                  const [firstWord, ...rest] = platform.name.split(" ");
-                  const remainingText = rest.join(" ");
-
-                  return (
-                    <div
-                      key={index}
-                      ref={(el) => (labelsRef.current[index] = el)}
-                      className={`absolute flex items-center gap-2 ${flexClass} min-w-max`}
-                      style={style}
-                    >
-                      <div className="bg-white/10 backdrop-blur-md rounded-full p-2 border border-white/20 shadow-lg shrink-0">
-                        {getIcon(platform.icon)}
-                      </div>
-                      <div className={`flex flex-col ${flexClass.includes('text-right') ? 'items-end' : flexClass.includes('text-center') ? 'items-center' : 'items-start'} leading-none`}>
-                        <span className="text-white font-bold text-xl md:text-sm mb-1 md:mb-0.5">{firstWord}</span>
-                        <span className="text-gray-400 font-medium text-sm md:text-[10px] uppercase tracking-wide">{remainingText}</span>
-                      </div>
-                    </div>
-                  );
-                })}
               </div>
+              <button
+                onClick={() => {
+                  const contactSection = document.getElementById('contact');
+                  if (contactSection) {
+                    contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                }}
+                className="relative px-8 sm:px-10 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-bold tracking-wide bg-[#FFDA7B] text-black rounded-full border border-[#FFDA7B]/50 hover:bg-[#FBC02D] hover:scale-[1.03] transition-all duration-300 shadow-[0_0_30px_rgba(255,218,123,0.3)] flex items-center gap-2"
+              >
+                Start the Engine
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
             </div>
-
-            <button
-              ref={buttonRef}
-              onClick={() => {
-                const contactSection = document.getElementById('contact');
-                if (contactSection) {
-                  contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-              }}
-              className="absolute bottom-8 md:bottom-12 left-0 right-0 mx-auto w-fit px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold rounded-full shadow-2xl hover:shadow-yellow-500/50 hover:scale-105 transition-all duration-300 text-base md:text-lg z-20 whitespace-nowrap"
-            >
-              Book a Discovery Call
-            </button>
-          </div>
+          </motion.div>
         </div>
-      </section>
-    </>
+
+        {/* Right Column / Overlay - Editorial List */}
+        <div className="md:col-span-5 lg:col-span-6 relative h-[600px] flex flex-col justify-center space-y-12 md:space-y-24 pointer-events-none">
+          {platformGroups.map((group, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 + (index * 0.1) }}
+              viewport={{ once: true }}
+              className={`flex flex-col ${group.align === 'right' ? 'items-end text-right md:pr-12' : 'items-start text-left md:pl-12'}`}
+            >
+              <h4 className="text-gray-500 text-xs font-bold tracking-[0.2em] uppercase mb-4 opacity-70">{group.label}</h4>
+              <ul className="space-y-2">
+                {group.items.map((item, i) => (
+                  <li key={i} className="text-xl md:text-3xl text-white/90 font-light tracking-tight font-heading">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          ))}
+        </div>
+
+      </div>
+    </section>
   );
 };
 
